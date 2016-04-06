@@ -1,4 +1,9 @@
-# tutorials
+# SimPEG Tutorials
+
+[![Build Status](https://travis-ci.org/simpeg/tutorials.svg?branch=master)](https://travis-ci.org/simpeg/tutorials) 
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/simpeg/tutorials/blob/master/LICENSE)
+[![Documentation Status](https://readthedocs.org/projects/simpegtutorials/badge/?version=latest)](http://simpegtutorials.readthedocs.org/en/latest/?badge=latest)
+
 Docs and a collection of notebooks and tutorials using SimPEG for Geophysical Inversions. 
 
 Prerequisites: 
