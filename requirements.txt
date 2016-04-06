@@ -1,0 +1,4 @@
+numpy
+scipy
+matplotlib
+git+git://github.com/simpeg/simpeg.git@Examples
