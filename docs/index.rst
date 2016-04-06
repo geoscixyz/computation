@@ -19,3 +19,4 @@ Geophysics.
 .. toctree::
    :maxdepth: 2
 
+   ./content/gettingstarted
