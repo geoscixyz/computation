@@ -1,4 +1,4 @@
-.. _tools::
+.. _tools:
 
 Tools: Python, Numpy, Scipy and Matplotlib
 ==========================================
