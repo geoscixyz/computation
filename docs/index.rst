@@ -20,3 +20,7 @@ Geophysics.
    :maxdepth: 2
 
    ./content/gettingstarted
+   ./content/tools
+   ./content/thereandback
+   ./content/pixelsandtheirneighbors
+
