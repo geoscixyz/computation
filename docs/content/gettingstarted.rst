@@ -195,4 +195,17 @@ If all is not well ...
 
 Submit an `issue <https://github.com/simpeg/tutorials/issues>`_ and `change this file <https://github.com/simpeg/tutorials/edit/master/docs/content/gettingstarted.rst>`_!
 
+Advanced: Installing Mumps
+--------------------------
+
+Mumps_ is a direct solver that can be used for solving large(ish)[#f1]_ linear systems of equations.
+
+.. _Mumps: http://mumps.enseeiht.fr/
+
+- Disclaimer for Windows users: we have not figured out a stable way to install
+  and connect Mumps for Windows Machines. If you have one, please `change this file <https://github.com/simpeg/tutorials/blob/master/docs/content/gettingstarted.rst>`_
+
+.. rubric:: Footnotes
+
+.. [#f1] These instructions are for serial (not parallel) Mumps_ installation. The definition of large also depends on the size of your computer
 

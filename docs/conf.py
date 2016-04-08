@@ -34,7 +34,8 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
-    'matplotlib.sphinxext.plot_directive',
+    'matplotlib.sphinxext.plot_directive', # plots made with python
+    # 'sphinxcontrib.bibtex', # citations that can be made from a bibtex
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -80,7 +81,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ['_build', '_static']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
