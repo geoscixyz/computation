@@ -190,4 +190,9 @@ and see
     plt.show()
 
 
+If all is not well ...
+----------------------
+
+Submit an `issue <https://github.com/simpeg/tutorials/issues>`_ and `change this file <https://github.com/simpeg/tutorials/edit/master/docs/content/gettingstarted.rst>`_!
+
 
