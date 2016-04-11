@@ -41,7 +41,7 @@ Working with Git and GitHub
 
 To keep track of your code changes and contribute back to SimPEG_, you will
 need a github_ account and fork the `SimPEG repository <http://github.com/simpeg/simpeg>`_
-( `How to fork a repo <https://help.github.com/articles/fork-a-repo/>`_ ).
+(`How to fork a repo <https://help.github.com/articles/fork-a-repo/>`_).
 
 
 .. _github: http://github.com
