@@ -81,18 +81,18 @@ Setting up your environment
 ---------------------------
 
 So that you can access SimPEG_ from anywhere on your computer, you need to add
-it to your path. This can be done using symlinks. In your `git` directory,
-create a directory called `python_symlinks`.
+it to your path. This can be done using symlinks. In your :code:`git` directory,
+create a directory called :code:`python_symlinks`.
 
 .. image:: ../images/gitfolders.png
     :align: center
-    :width: 60%
+    :width: 40%
 
 Open a terminal in this directory and create a symlink for SimPEG_ ::
 
     ln -s ../SimPEG/SimPEG .
 
-Then, in your shell, you need to add a `PYTHONPATH` variable. For Mac and
+Then, in your shell, you need to add a :code:`PYTHONPATH` variable. For Mac and
 Linux, if you are using Z shell (`Oh My Zsh <http://ohmyz.sh/>`_ is used by a
 lot of SimPEG_ developers) or bash open the config in a text editor, ie::
 
@@ -102,7 +102,7 @@ or::
 
     nano ~/.bash_profile
 
-and add a `PYTHONPATH` variable::
+and add a :code:`PYTHONPATH` variable::
 
     export PYTHONPATH="$PYTHONPATH:/Users/USER/git/python_symlinks"
 
@@ -133,7 +133,7 @@ Open your user settings
     :align: center
     :width: 400
 
-and edit them to include the path to your python_symlinks::
+and edit them to include the path to your :code:`python_symlinks`::
 
     {
     "added_words":
@@ -202,6 +202,26 @@ and see
     Inversion_Linear.run()
     plt.show()
 
+You are now set up to SimPEG_!
+
+.. note::
+
+    you likely got a message that said::
+
+        Efficiency Warning: Interpolation will be slow, use setup.py!
+            python setup.py build_ext --inplace
+
+    This is because we use Cython_ to speed up interpolation. To set this up open
+    up a command prompt in :code:`git/simpeg`, and run::
+
+        python setup.py build_ext --inplace
+
+    .. _Cython: http://cython.org/
+
+    Which might output a bunch of warnings, but so long as there are no
+    errors, you should be good to go. To check, re-run the example and see if
+    the efficiency warning still appears.
+
 
 If all is not well ...
 ----------------------
@@ -215,12 +235,24 @@ Submit an issue_ and `change this file`_!
 Advanced: Installing Mumps
 --------------------------
 
-Mumps_ is a direct solver that can be used for solving large(ish) [#f1]_ linear systems of equations.
+Mumps_ is a direct solver that can be used for solving large(ish) [#f1]_
+linear systems of equations. To install, follow the instructions to download
+and install pymatsolver_.
 
 .. _Mumps: http://mumps.enseeiht.fr/
 
-- Disclaimer for Windows users: we have not figured out a stable way to install
+.. _pymatsolver: https://github.com/rowanc1/pymatsolver
+
+- **Disclaimer for Windows users**: we have not figured out a stable way to install
   and connect Mumps for Windows Machines. If you have one, please `change this file`_!
+
+If you open a `Jupyter notebook`_ and are able to run::
+
+    from pymatsolver import MumpsSolver
+
+then you have succeeded! Otherwise, make an `issue in pymatsolver`_.
+
+.. _issue in pymatsolver: https://github.com/rowanc1/pymatsolver/issues
 
 .. rubric:: Footnotes
 
