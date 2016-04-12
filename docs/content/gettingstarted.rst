@@ -62,6 +62,14 @@ or (2) using a desktop client such as SourceTree_.
     :width: 400
     :target: https://www.sourcetreeapp.com/
 
+If this is your first time managing a github_ repository through SourceTree_,
+it is also handy to set up the remote account so it remembers your github_
+user name and password
+
+.. image:: ../images/sourceTreeRemote.png
+    :align: center
+    :width: 400
+
 For managing your copy of SimPEG_ and contributing back to the main
 repository, have a look at the article: `A successful git branching model
 <http://nvie.com/posts/a-successful-git-branching-model/>`_
@@ -74,8 +82,13 @@ Setting up your environment
 
 So that you can access SimPEG_ from anywhere on your computer, you need to add
 it to your path. This can be done using symlinks. In your `git` directory,
-create a directory called `python_symlinks`. Open a terminal in this
-directory and create a symlink for SimPEG_ ::
+create a directory called `python_symlinks`.
+
+.. image:: ../images/gitfolders.png
+    :align: center
+    :width: 60%
+
+Open a terminal in this directory and create a symlink for SimPEG_ ::
 
     ln -s ../SimPEG/SimPEG .
 
