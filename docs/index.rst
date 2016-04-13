@@ -7,17 +7,16 @@
 SimPEG Tutorials
 ================
 
-Tutorials for using SimPEG_ for Simulation and Parameter Estimation in
-Geophysics.
+A set of Tutorials for using SimPEG_ for Simulation and Parameter Estimation
+in Geophysics.
 
 .. _SimPEG : http://simpeg.xyz
-
 
 
 **Contents:**
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    ./content/gettingstarted
    ./content/tools
