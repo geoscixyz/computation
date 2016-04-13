@@ -1,4 +1,4 @@
-.. pixelsandtheirneighbors
+.. _pixelsandtheirneighbors:
 
 Pixels and Their Neighbors
 ==========================

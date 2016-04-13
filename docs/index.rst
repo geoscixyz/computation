@@ -23,4 +23,5 @@ Geophysics.
    ./content/tools
    ./content/thereandback
    ./content/pixelsandtheirneighbors
+   ./content/resources
 
