@@ -7,8 +7,8 @@
 SimPEG Tutorials
 ================
 
-A set of Tutorials for using SimPEG_ for Simulation and Parameter Estimation
-in Geophysics.
+A set of tutorials for using SimPEG_! SimPEG_ is a framework and toolbox for
+simulation and parameter estimation in geophysics.
 
 .. _SimPEG : http://simpeg.xyz
 

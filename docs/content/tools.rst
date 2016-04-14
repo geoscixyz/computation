@@ -126,6 +126,8 @@ or using list comprehension
     >>> b = [i for i in range(n)]
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+Try running these in the notebook_ and compare the times. To get a better
+picture, increase :code:`n`.
 
 .. note::
 
@@ -174,18 +176,20 @@ practice to import is as shorthand :code:`np`.
 How many dimensions?
 ********************
 
-    >>> a = np.array(1) # scalar
-    >>> print a.size, a.shape
-    1 ()
-    >>> b = np.array([1]) # vector
-    >>> print b.size, b.shape
-    1 (1,)
-    >>> c = np.array([[1]]) # array
-    >>> print c.size, c.shape
-    1 (1, 1)
+NumPy makes a distinction between scalars, vectors and arrays
 
-The :code:`size` gives you the number of elements, while :code:`shape` gives
-the length of each array dimension.
+    >>> a = np.array(1) # scalar
+    >>> print a.shape # has no dimensions
+    ()
+    >>> b = np.array([1]) # vector
+    >>> print b.shape # has one dimension
+    (1,)
+    >>> c = np.array([[1]]) # array
+    >>> print c.shape # has two (or more) dimensions
+    (1, 1)
+
+The :code:`shape` gives the length of each array dimension. (:code:`size`
+gives you the number of elements)
 
 .. note::
     In the notebook, you can query documentation using a :code:`?`
@@ -193,6 +197,42 @@ the length of each array dimension.
     .. image:: ../images/docsinnotebook.png
         :scale: 30%
         :align: center
+
+This distinction is particularly important when performing linear algebra
+operations. For instance, if we create a vector::
+
+    >>> v = np.random.rand(10)
+    >>> v.shape
+    (10,)
+
+and then want to take an inner product, which we expect to output a scalar,
+one way you might think to do this (spoiler alert: it's wrong!)::
+
+    >>> a = v.T * v
+    >>> a.shape
+    (10,)
+
+turns out, the concept of a transpose doesn't matter for vectors. What we just
+did was a `Hadamard product <https://en.wikipedia.org/wiki/Hadamard_product_(matrices)>`_
+(element-wise multiplication), which is the same as not using the transpose
+
+    >>> v.T * v == v * v
+    True
+
+So how do we take an inner product? (:code:`dot`)
+
+    >>> b = v.dot(v)
+    >>> b.shape
+    ()
+
+Success! :code:`b` is a scalar.
+
+What happens if we work with arrays instead?
+
+    >>> w = np.random.rand(10,1)
+    >>> w.shape
+    (10,1)
+
 
 
 SciPy
