@@ -40,7 +40,7 @@ and open :code:`tools.ipynb`. A few things to note
 
 .. image:: ../images/notebookpointers.png
     :align: center
-    :width: 100%
+    :width: 90%
 
 - To execute a cell is **Shift + Enter**
 - To restart the kernel (clean your slate) is **Esc + 00**
@@ -85,7 +85,7 @@ is integer division, while::
     >>> 1./2.
     0.5
 
-is float division.
+is floating point division.
 
 
 Counting and Lists
@@ -101,21 +101,36 @@ Python_ uses zero-based indexing::
 
 There are a few handy indexing tricks::
 
-    >>> mylist[:2]
+    >>> mylist[:2] # counting up
     [6, 5]
-    >>> mylist[2:]
+    >>> mylist[2:] # starting from
     [4, 3]
-    >>> mylist[-1]
+    >>> mylist[-1] # going backwards
     3
 
 
 Loops and List Comprehension
 ****************************
 
+A :code:`for` loop to append `10` values to a list looks like::
 
-.. image:: ../images/loopsandlists.png
-    :align: center
-    :width: 80%
+    >>> n = 10
+    >>> a = []
+    >>> for i in range(n):
+    ... a.append(i)
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+or using list comprehension
+
+    >>> n = 10
+    >>> b = [i for i in range(n)]
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+.. note::
+
+    In the notebook, we use the cell magic :code:`%%time` to track the amount of
+    time it takes to execute cell
 
 NumPy
 -----
