@@ -112,7 +112,7 @@ There are a few handy indexing tricks::
 Loops and List Comprehension
 ****************************
 
-A :code:`for` loop to append `10` values to a list looks like::
+A :code:`for` loop to append :code:`10` values to a list looks like::
 
     >>> n = 10
     >>> a = []
@@ -156,10 +156,44 @@ NumPy
     :target: http://www.numpy.org/
 
 
+NumPy_ contains the n-dimensional array machinery for storing and working with
+matrices and vectors. To use NumPy_, it must first be imported. It is standard
+practice to import is as shorthand :code:`np`.
 
 .. code::
 
-    import numpy as np
+    >>> import numpy as np
+
+.. note::
+    You can use tab completion to look at the attributes of an object
+
+    .. image:: ../images/tabcompletion.png
+        :scale: 30%
+        :align: center
+
+How many dimensions?
+********************
+
+    >>> a = np.array(1) # scalar
+    >>> print a.size, a.shape
+    1 ()
+    >>> b = np.array([1]) # vector
+    >>> print b.size, b.shape
+    1 (1,)
+    >>> c = np.array([[1]]) # array
+    >>> print c.size, c.shape
+    1 (1, 1)
+
+The :code:`size` gives you the number of elements, while :code:`shape` gives
+the length of each array dimension.
+
+.. note::
+    In the notebook, you can query documentation using a :code:`?`
+
+    .. image:: ../images/docsinnotebook.png
+        :scale: 30%
+        :align: center
+
 
 SciPy
 -----
