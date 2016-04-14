@@ -132,6 +132,21 @@ or using list comprehension
     In the notebook, we use the cell magic :code:`%%time` to track the amount of
     time it takes to execute cell
 
+A handy tool for looping over lists is :code:`enumerate`::
+
+    >>> mylist = ['Monty', 'Python', 'Flying', 'Circus'] # python was named after the movie!
+    >>> for i, val in enumerate(mylist):
+    ... print i, val
+    0 Monty
+    1 Python
+    2 Flying
+    3 Circus
+
+This is a flavor of some of the flow control for lists in Python_, for more
+details, check out chapters `4 <https://docs.python.org/2/tutorial/controlflow.html>`_,
+`5 <https://docs.python.org/2/tutorial/datastructures.html>`_ in the `Python Tutorial`_.
+
+
 NumPy
 -----
 
@@ -178,5 +193,7 @@ Pointers
 --------
 
 - `Software Carpentry <http://swcarpentry.github.io/python-novice-inflammation/>`_
-- `Python Tutorial <https://docs.python.org/2/tutorial/index.html>`_
+- `Python Tutorial`_
+
+.. _Python Tutorial: https://docs.python.org/2/tutorial/index.html
 
