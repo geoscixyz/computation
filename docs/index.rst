@@ -22,5 +22,10 @@ in Geophysics.
    ./content/tools
    ./content/thereandback
    ./content/pixelsandtheirneighbors
+   ./content/fieldsfluxesphysics
+   ./content/guessbutfirst
+   ./content/stroll
+   ./content/whichwayisdown
+   ./content/spices
    ./content/resources
 
