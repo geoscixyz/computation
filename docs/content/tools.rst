@@ -20,6 +20,7 @@ computing in Python_.
 .. _SciPy: https://www.scipy.org/
 .. _Matplotlib: http://matplotlib.org/
 .. _Jupyter Notebook: http://jupyter.org/
+.. _notebook: https://github.com/simpeg/tutorials/blob/master/notebooks/tools.ipynb
 
 
 Jupyter Notebook
