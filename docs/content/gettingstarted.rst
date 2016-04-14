@@ -41,7 +41,7 @@ Working with Git and GitHub
 
 To keep track of your code changes and contribute back to SimPEG_, you will
 need a github_ account and fork the `SimPEG repository <http://github.com/simpeg/simpeg>`_
-(`How to fork a repo <https://help.github.com/articles/fork-a-repo/>`_).
+(`How to fork a repo <https://help.github.com/articles/fork-a-repo/>`_). Software
 
 
 .. _github: http://github.com
@@ -249,6 +249,8 @@ and install pymatsolver_.
 If you open a `Jupyter notebook`_ and are able to run::
 
     from pymatsolver import MumpsSolver
+
+.. _Jupyter notebook: http://jupyter.org/
 
 then you have succeeded! Otherwise, make an `issue in pymatsolver`_.
 
