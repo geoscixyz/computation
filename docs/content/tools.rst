@@ -80,6 +80,10 @@ This is particularly important when doing division::
     >>> 1/2
     0
 
+.. note::
+    
+    If that scares you, you can always use division from the future! :code:`from __future__ import division` see PEP0238_
+
 is integer division, while::
 
     >>> 1./2.
@@ -270,4 +274,5 @@ Pointers
 - `Python Tutorial`_
 
 .. _Python Tutorial: https://docs.python.org/2/tutorial/index.html
+.. _PEP0238: https://www.python.org/dev/peps/pep-0238/
 
