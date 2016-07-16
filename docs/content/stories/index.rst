@@ -16,5 +16,6 @@ Stories
     :maxdepth: 2
 
     template
+    PotentialFields_MAG
 
 .. _SimPEG: http://simpeg.xyz
