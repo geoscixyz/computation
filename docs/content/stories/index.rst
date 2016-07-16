@@ -16,5 +16,6 @@ Stories
     :maxdepth: 2
 
     template
+    DC
 
 .. _SimPEG: http://simpeg.xyz
