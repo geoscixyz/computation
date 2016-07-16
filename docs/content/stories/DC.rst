@@ -33,6 +33,7 @@ Physical behavior of DC resistivity survey is governed by steady-state maxwell's
 
 - :math:`\delta`: Volumetric delta function (m :math:`^{-3}`)
 
+
 Consider a simple gradient array having a pair of A (+) and B (+) current electrodes (Tx) with multiple M (+) and N (-) potential electrodes (Rx). Using giant battery (?), we make significant potential difference allowing electrical currents flow A to B electrodes. If the earth includes conductors or resistors that will distorts current flows, and measured potential differences on the surface electrodes (MN) will be reflective on those distortions. Typically kimberlitic pipe (including diamonds) will be more conductive than the background rock (granitic) hence, measured potential difference will be low.
 
 .. image:: images/SimPEGFramework.png
