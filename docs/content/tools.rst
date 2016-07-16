@@ -1,7 +1,7 @@
 .. _tools:
 
-Toolbox
-=======
+Tools
+=====
 
 - **Purpose:** To introduce and provide resources for the tools used to build and work with SimPEG_
 
@@ -12,7 +12,7 @@ and has core dependencies on three packages standard to scientific
 computing in Python_.
 
 - NumPy_: n-dimensional array package
-- SciPy_: scientific computing including: sparse matrices, numerical solvers, optimiztion routines, etc.
+- SciPy_: scientific computing including: sparse matrices, numerical solvers, optimization routines, etc.
 - Matplotlib_: 2D plotting library
 
 .. _Python: https://www.python.org/
@@ -85,7 +85,8 @@ is integer division, while::
     >>> 1./2.
     0.5
 
-is floating point division.
+is floating point division. This is only the case in Python 2, in Python 3,
+division will return a floating point number.
 
 
 Counting and Lists
@@ -147,6 +148,27 @@ A handy tool for looping over lists is :code:`enumerate`::
 This is a flavor of some of the flow control for lists in Python_, for more
 details, check out chapters `4 <https://docs.python.org/2/tutorial/controlflow.html>`_,
 `5 <https://docs.python.org/2/tutorial/datastructures.html>`_ in the `Python Tutorial`_.
+
+If, elif, else
+**************
+
+Conditionals in Python_ are implemented using :code:`if`, :code:`elif`, :code:`else`
+
+    >>> # Pick a random number between 0 and 100
+    >>> number = (100.*np.random.rand(1)).round() # make it an integer
+    >>> if number > 42:
+    ...     print '%i is too high'%number
+    ... elif number < 42:
+    ...     print '%i is too low'%number
+    ... else:
+    ...     print 'you found the secret to life. %i'%number
+
+Note that the indentation level matters in python. Logical operators,
+:code:`or`, :code:`and` are also handy for constructing conditionals
+
+Functions
+*********
+
 
 
 NumPy
@@ -212,9 +234,11 @@ one way you might think to do this (spoiler alert: it's wrong!)::
     >>> a.shape
     (10,)
 
-turns out, the concept of a transpose doesn't matter for vectors. What we just
-did was a `Hadamard product <https://en.wikipedia.org/wiki/Hadamard_product_(matrices)>`_
-(element-wise multiplication), which is the same as not using the transpose
+turns out, the concept of a transpose doesn't matter for vectors, they only
+have one dimension, so there is no way to exchange dimensions. What we just
+did was a `Hadamard product
+<https://en.wikipedia.org/wiki/Hadamard_product_(matrices)>`_ (element-wise
+multiplication), so
 
     >>> v.T * v == v * v
     True
@@ -260,6 +284,8 @@ Matplotlib
 
 Object Oriented Programming in Python
 -------------------------------------
+
+Also need functions
 
 Class, Inheritance, Properties, Wrappers, and Self
 
