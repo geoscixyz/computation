@@ -14,6 +14,7 @@
 
 import sys
 import os
+import SimPEG
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -34,7 +35,8 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
-    'matplotlib.sphinxext.plot_directive', # plots made with python
+    'matplotlib.sphinxext.plot_directive',  # plots made with python
+    'pyexec',
     # 'sphinxcontrib.bibtex', # citations that can be made from a bibtex
 ]
 
@@ -47,7 +49,7 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 
 # The encoding of source files.
-#source_encoding = 'utf-8-sig'
+# source_encoding = 'utf-8-sig'
 
 # The master toctree document.
 master_doc = 'index'

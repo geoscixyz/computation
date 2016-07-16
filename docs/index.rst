@@ -19,6 +19,7 @@ simulation and parameter estimation in geophysics.
    :maxdepth: 1
 
    ./content/gettingstarted
+   ./content/stories/index
    ./content/tools
    ./content/thereandback
    ./content/pixelsandtheirneighbors
