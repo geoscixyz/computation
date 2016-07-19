@@ -1,4 +1,4 @@
-.. _PotentialFields_MAG:
+.. _PF_MAG:
 
 Potential Fields (Magnetics)
 ============================
