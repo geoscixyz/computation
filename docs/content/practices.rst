@@ -191,7 +191,7 @@ towards it and would appreciate contributions that do too!
 
 There are a few resources we use to promote these practices: the service
 `Quantified Code <https://www.quantifiedcode.com/app/project/933aa3decf444538a
-a432c8817169b6d?tab=basics>`_ to check for consistency (... we have some work
+a432c8817169b6d>`_ to check for consistency (... we have some work
 to do. Pull requests are welcome!)
 
 Sublime has PEP 8 linter packages that you can use. I use SublimeLinter-pep8.
