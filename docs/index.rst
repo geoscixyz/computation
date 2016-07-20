@@ -1,6 +1,7 @@
 .. _index:
 
-.. image:: https://raw.github.com/simpeg/simpeg/master/docs/simpeg-logo.png
+.. image:: https://raw.github.com/simpeg/simpeg/master/docs/images/simpeg-logo.png
+    :alt: SimPEG Logo
     :width: 50%
     :align: center
 
@@ -21,6 +22,7 @@ simulation and parameter estimation in geophysics.
    ./content/gettingstarted
    ./content/stories/index
    ./content/tools
+   ./content/practices
    ./content/thereandback
    ./content/pixelsandtheirneighbors
    ./content/fieldsfluxesphysics
