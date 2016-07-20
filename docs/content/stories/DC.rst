@@ -1,4 +1,4 @@
-.. _stories:
+.. _dc_tkc_story:
 
 DC resistivity
 ==============
