@@ -45,8 +45,6 @@ and a reproducible plot
     import SimPEG
     mesh = SimPEG.Mesh.TensorMesh([10,10])
     mesh.plotGrid()
-    plt.show()
-
 
 
 Model and Mapping
