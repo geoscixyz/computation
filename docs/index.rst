@@ -21,6 +21,7 @@ simulation and parameter estimation in geophysics.
    ./content/gettingstarted
    ./content/stories/index
    ./content/tools
+   ./content/practices
    ./content/thereandback
    ./content/pixelsandtheirneighbors
    ./content/fieldsfluxesphysics
