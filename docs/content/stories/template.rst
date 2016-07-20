@@ -47,7 +47,7 @@ and a reproducible plot
     mesh.plotGrid()
     plt.show()
 
-
+.. raw:: html
 
 Model and Mapping
 ^^^^^^^^^^^^^^^^^
