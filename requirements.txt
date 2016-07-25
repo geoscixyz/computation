@@ -1,6 +1,6 @@
 numpy
 scipy
 matplotlib
-git+git://github.com/simpeg/simpeg.git@master
+git+git://github.com/simpeg/simpeg.git@dev
 git+git://github.com/3ptscience/sphinxcontrib-pyexec
 
