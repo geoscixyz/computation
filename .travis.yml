@@ -13,7 +13,6 @@ before_install:
   # - ./miniconda.sh -b
   # - export PATH=/home/travis/anaconda/bin:/home/travis/miniconda/bin:$PATH
   # - conda update --yes conda
-  - echo $PWD
   - pip install --upgrade pip;
   - pip install -r requirements.txt
 
