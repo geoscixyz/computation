@@ -38,15 +38,23 @@ How did you set up the mesh? If you would like to show code snippets, you can!
     mesh = SimPEG.Mesh.TensorMesh([10,10])
     print mesh.nC
 
-and a reproducible plot
+To show some code and hide some doce, use :code:`#hide` inside the :code:`exec` environment
+
+.. exec::
+
+    import SimPEG #hide
+    mesh = SimPEG.Mesh.TensorMesh([10,10]) #hide
+    print mesh.nC
+
+
+
+Making a reproducible plot
 
 .. plot::
 
     import SimPEG
     mesh = SimPEG.Mesh.TensorMesh([10,10])
     mesh.plotGrid()
-    plt.show()
-
 
 
 Model and Mapping
