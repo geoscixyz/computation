@@ -3,9 +3,6 @@
 Potential Fields (Magnetics)
 ============================
 
-
-
-
 Setup
 -----
 Maxwell's equations for a static electric field and in the absence of free-currents can be written as:
@@ -101,22 +98,23 @@ The input file looks like this:
     import os
     import sys
 
-    sys.path.insert(0, os.path.abspath('.'))
+    work_dir = os.getcwd()
+    psep = os.path.sep
+    input_file = work_dir + psep + "content" + psep + "stories"+ psep + "files" + psep + "SimPEG_PF_Input.inp"
 
-    print os.getcwd()
-    #driver = PF.MagneticsDriver.MagneticsDriver_Inv("./stories/SimPEG_PF_Input.inp")
-    #mesh = driver.mesh
-    #survey = driver.survey
+    driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file)
 
-    #print mesh.nC
+    # You acces the components of the inversion like this
+    mesh = driver.mesh
+    survey = driver.survey
 
-and a reproducible plot
+
 
 
 Model and Mapping
 ^^^^^^^^^^^^^^^^^
 
-What is your model?
+Since we have already loaded the model in a rectangular mesh, we can plot it with
 
 
 Fields
