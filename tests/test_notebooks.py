@@ -38,8 +38,6 @@ def get(nbname, nbpath):
         check = nbexe.returncode
         if check == 0:
             print '\n ..... {0} Passed ..... \n'.format(nbname)
-            subprocess.call(['find', '{0}'.format(os.path.sep.join(TESTDIR.split(os.path.sep)[:-1])),
-                    '-type', 'f', '-name', '{0}.html'.format(nbname), '-delete'])
         else:
             print '\n <<<<< {0} FAILED >>>>> \n'.format(nbname)
             print 'Captured Output: \n {0}'.format(err)
@@ -47,6 +45,12 @@ def get(nbname, nbpath):
         self.assertTrue(check == 0)
 
     return test_func
+
+
+def tearDown():
+    print os.path.sep.join(TESTDIR.split(os.path.sep)[:-1])
+    subprocess.call(['find', '{0}'.format(os.path.sep.join(TESTDIR.split(os.path.sep)[:-1])),
+                    '-type', 'f', '-name', '*.html', '-delete'])
 
 
 attrs = dict()
@@ -62,3 +66,4 @@ TestNotebooks = type('TestNotebooks', (unittest.TestCase,), attrs)
 
 if __name__ == '__main__':
     unittest.main()
+    tearDown()
