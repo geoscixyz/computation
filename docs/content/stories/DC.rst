@@ -14,7 +14,7 @@ DC resistivity
 Set-up
 ------
 
-Physical behavior of DC resistivity survey is governed by steady-state maxwell's equation:
+Physical behavior of DC resistivity survey is governed by steady-state Maxwell's equation:
 
 .. math::
     \vec{j} = \sigma \vec{e}
@@ -91,7 +91,7 @@ Smaller vertical size of the cell (dz) is used close to the topographic surface 
 Survey
 ******
 
-We use a simple gradient array having a pair of current electrodes (AB), and multiple potential electrodes (MN). Then length of AB and MN are 1200 and 25 m, respectively.
+We use a simple gradient array having a pair of current electrodes (AB), and multiple potential electrodes (MN).  The lengths of AB and MN electrodes are 1200 and 25 m, respectively.
 
 
 .. figure:: images/dc/GradientArray.png
@@ -101,10 +101,132 @@ We use a simple gradient array having a pair of current electrodes (AB), and mul
 
     Gradient array
 
+Once we have obtained locations of AB (Src) and MN (Rx) electrodes, we can generate **Survey** class:
+
+.. code-block:: python
+
+    from SimPEG.EM.Static import DC
+
+    # Create Src and Rx classes for DC problem
+    Aloc1_x = np.r_[-600., 0, 0.] + np.r_[xc, yc, zc]
+    Bloc1_x = np.r_[600., 0, 0.] + np.r_[xc, yc, zc]
+
+    # Rx locations (M-N electrodes, x-direction)
+    x = mesh.vectorCCx[np.logical_and(mesh.vectorCCx>-300.+ xc, mesh.vectorCCx<300.+ xc)]
+    y = mesh.vectorCCy[np.logical_and(mesh.vectorCCy>-300.+ yc, mesh.vectorCCy<300.+ yc)]
+    # Grid selected cell centres to get M and N Rx electrode locations
+    Mx = Utils.ndgrid(x[:-1], y, np.r_[-12.5/2.])
+    Nx = Utils.ndgrid(x[1:], y, np.r_[-12.5/2.])
+
+    rx = DC.Rx.Dipole(Mx, Nx)
+    src = DC.Src.Dipole([rx], Aloc1_x, Bloc1_x)
+
+    # Form survey object using Srcs and Rxs that we have generated
+    survey = DC.Survey([src])
 
 
-Inversion
----------
+Fields and Data
+***************
+
+By solving the DC equations, we compute electrical potential (:math:`\phi`) at every cells. **Problem** class does this, but it still requires survey information hence we pair it to the **Survey** class:
+
+.. code-block:: python
+
+    # Define problem and set solver
+    problem = DC.Problem3D_CC(mesh)
+
+    problem.Solver = MumpsSolver
+    # Pair problem and survey
+    problem.pair(survey)
+
+Here, we used ``DC.Problem3D_CC``, which means 3D space and :math:`\phi` is defined at the cell center. Now, we are ready to run DC forward modelling! For this modelling, inside of the code, there are two steps:
+
+1. Compute fields (:math:`\phi` at every cells)
+2. Evaluate at Rx location (potential difference at MN electrodes)
+
+Consider two conductivity models:
+
+- Homogeneous background below topographic surface: ``sigma0`` (:math:`10^{-4}` S/m)
+- Includes diamond pipes: ``sigma`` (S/m)
+
+.. code-block:: python
+
+    # Read pre-generated conductivity model in UBC format
+    sigma = mesh.readModelUBC("VTKout_DC.dat")
+    # Identify air cells in the model
+    airind = sigma == 1e-8
+    # Generate background model (constant conductiivty below topography)
+    sigma0 = np.ones_like(sigma)*1e-4
+    sigma0[airind] = 1e-8
+
+Then we compute fields for both conductivity models:
+
+.. code-block:: python
+
+    # Forward model fields due to the reference model and true model
+    f0 = problem.fields(sigma0)
+    f = problem.fields(sigma)
+
+Now ``f`` and ``f0`` are **Field** objects including computed :math:`\phi` everywhere. However, this **Field** object know how to compute both :math:`\vec{e}`, :math:`\vec{j}`, and electrical charge, :math:`\int_V \rho_v dV` (:math:`\rho_v` is volumetric charge density). Note that if we know :math:`\phi`, all of them can be computed for a corresponding source:
+
+.. code-block:: python
+
+    phi = f[src, 'phi']
+    e = f[src, 'e']
+    j = f[src, 'j']
+    charge = f[src, 'charge']
+
+Since field object for the background model is generatec so, we can obtain secondary potential:
+
+.. code-block:: python
+
+    # Secondary potential
+    phi0 = f0[src, 'phi']
+    phi_sec = phi - phi0
+
+We present plan and section views of currents, charges, and secondary potentials in :numref:`DCfields`.
+
+.. figure:: images/dc/DCfields.png
+    :align: center
+    :width: 100%
+    :name: DCfields
+
+    DC fields. Left, middle, and right panels show currents, charges, and secondary potentials.
+
+Current flows from A (+) to B (-) electrode (left to right). Kimberlite pipe should be more conductive than the background considering more currents are flowing through the pipe (See distortions of the current path in the left panel).
+
+Electrical charges (the middle panel) supports that the pipe is conductive since left and right side of the pipe has negative and positive charges, respectvely. In addition, charges only built on the boundary of the conductive pipe.
+
+Secondary potential (the right panel) is important since it shows response from the kimberlite pipe, which often called "Anomalous potential". Usually, removing background response is a good way to see how much anomalous response could be obtained for the target.
+
+On the other hand, we cannot measure those fields everywhere but measure potential differences at MN electrodes (Rx) hence we need to evalaute them from the fields:
+
+.. code-block:: python
+
+    # Get observed data
+    dobs = survey.dpred(sigma, f=f)
+
+If the field has not been computed then we do:
+
+
+.. code-block:: python
+
+    # Get observed data
+    dobs = survey.dpred(sigma)
+
+This will compute the field inside of the code then evaluate for data at Rx locations. Below image shows the computed DC data. Smaller potentials are obtained at the center locations, which implies the existence of conductive materials. Current easily flows with conductive materials, which means less potential is required to path through them, hence for resistive materials we get greater potential difference measured on the surface. The measured potential provides some idea of the earth; however, this is not enough, we want a 3D distribution of the conductivity!
+
+.. figure:: images/dc/DCdata.png
+    :align: center
+    :width: 50%
+    :name: DCdata
+
+    DC data.
+
+
+Inversion Elements
+------------------
+
 
 .. .. toctree::
 ..     :maxdepth: 2
