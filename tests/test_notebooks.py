@@ -6,10 +6,11 @@ import subprocess
 # Testing for the notebooks - use nbconvert to execute all cells of the
 # notebook
 
+dirname, filename = os.path.split(os.path.abspath(__file__))
+NBDIR = os.path.sep.join(dirname.split(os.path.sep)[:-1]+['notebooks'])
 
-TESTDIR = os.path.abspath(__file__)
-NBDIR = os.path.sep.join(TESTDIR.split(os.path.sep)[:-2] +
-                         ['notebooks' + os.path.sep]) # where are the notebooks?
+# TESTDIR = os.path.split(os.path.abspath(__file__))
+# NBDIR = os.path.sep.join(TESTDIR[:-1] + ['notebooks']) # where are the notebooks?
 
 def setUp():
     nbpaths = []  # list of notebooks, with file paths
@@ -30,7 +31,7 @@ def get(nbname, nbpath):
     def test_func(self):
         print '\n--------------- Testing {0} ---------------'.format(nbname)
         print '   {0}'.format(nbpath)
-        nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
+        nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(os.path.relpath(nbpath)),
                                   '--execute',
                                   '--ExecutePreprocessor.timeout=120'],
                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE,
