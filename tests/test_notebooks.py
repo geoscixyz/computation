@@ -9,7 +9,7 @@ import subprocess
 
 TESTDIR = os.path.abspath(__file__)
 NBDIR = os.path.sep.join(TESTDIR.split(os.path.sep)[:-2] +
-                         ['notebooks']) # where are the notebooks?
+                         ['notebooks' + os.path.sep]) # where are the notebooks?
 
 def setUp():
     nbpaths = []  # list of notebooks, with file paths
@@ -52,11 +52,6 @@ def get(nbname, nbpath):
     return test_func
 
 
-# def tearDown():
-#     print os.path.sep.join(TESTDIR.split(os.path.sep)[:-1])
-#     subprocess.call(['find', '{0}'.format(os.path.sep.join(TESTDIR.split(os.path.sep)[:-1])),
-#                     '-type', 'f', '-name', '*.html', '-delete'])
-
 
 attrs = dict()
 nbpaths, nbnames = setUp()
@@ -71,4 +66,3 @@ TestNotebooks = type('TestNotebooks', (unittest.TestCase,), attrs)
 
 if __name__ == '__main__':
     unittest.main()
-    # tearDown()
