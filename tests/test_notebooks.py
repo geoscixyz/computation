@@ -31,7 +31,7 @@ def get(nbname, nbpath):
     def test_func(self):
         print '\n--------------- Testing {0} ---------------'.format(nbname)
         print '   {0}'.format(nbpath)
-        nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(os.path.relpath(nbpath)),
+        nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
                                   '--execute',
                                   '--ExecutePreprocessor.timeout=120'],
                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE,
