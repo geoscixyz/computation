@@ -24,6 +24,8 @@ install:
 
 # command to run tests
 script:
+  - echo $TEST_DIR
+  - echo $PWD
   - nosetests $TEST_DIR
 
 # Flags used here, not in `make html`:
