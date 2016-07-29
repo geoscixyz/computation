@@ -227,10 +227,159 @@ This will compute the field inside of the code then evaluate for data at Rx loca
 Inversion Elements
 ------------------
 
+Our goal here is finding a 3D conductivity model, which explains the observed data shown in :numref:`DCdata`. Inversion elements (red box in :numref:`SimPEGFramework`) will handle this task with an ability to simluate forward problem. We go through each element and briefly explain.
 
-.. .. toctree::
-..     :maxdepth: 2
+Mapping
+*******
 
-..     template
+For the simulation, we used 3D conductivity model defined in every cell center location. However, for the inversion we may not want to estimate conductivity at every cell. For instance, our domain include some air cells, and we already know well about the conductivity of the air (:math:`10^{-8} \approx 0`) hence, those air cell should be excluded from the inversion model, :math:`m`. Accordingly, a mapping is required moving from the inversion model to conductivity model defined at whole discrete domain:
+
+.. math::
+    \sigma  = \mathcal{M}(m)
+
+In addition, conductivity varies logarithmically we often use log conductivity as our inversion model (:math:`m = log (\sigma)`). So, our inversion model is log conductivity only defined below the subsurface cells, and this can be expressed as
+
+.. math::
+
+    \sigma = \mathcal{M}_{exp}\Big(\mathcal{M}_{act} (m)\Big),
+
+where :math:`\mathcal{M}_{act}(\cdot)` is a ``InjectActiveCells`` map, which takes subsurface cell and surject to full domain including air cells, and :math:`\mathcal{M}_{exp}(\cdot)` is an ``ExpMap`` map takes log conductivity to conductivity. Combination of two maps are required to get :math:`\sigma` from :math:`m`, which can be codified as
+
+.. code-block:: python
+
+    # from log conductivity to conductivity
+    expmap = Maps.ExpMap(mesh)
+    # from subsurface cells to full 3D cells
+    actmap = Maps.InjectActiveCells(mesh, ~airind, np.log(1e-8))
+    mapping = expmap*actmap
+
+Generated mapping should be passed to **Problem** class:
+
+.. code-block:: python
+
+    # Generate problem with mapping
+    problem = DC.Problem3D_CC(mesh, mapping=mapping)
+
+Data Misfit
+***********
+
+Finding a model explaining the observed data requires a measure between observed (:math:`\mathbf{d}^{obs}`) and predicted data (:math:`\mathbf{d}^{dpred}`):
+
+.. math::
+
+    \phi_d = 0.5\| \mathbf{W}_d (\mathbf{d}^{pred}-\mathbf{d}^{obs})\|^2_2,
+
+where :math:`\mathbf{W}_d = \mathbf{diag}( \frac{1}{\% | \mathbf{d}^{obs} |+\epsilon} )` is the data weighting matrix. Uncertainty in the observed data is approximated as :math:`\% | \mathbf{d}^{obs} |+\epsilon`.
+
+.. code-block:: python
+
+    # percentage and floor for uncertainty in the observed data
+    std, eps = 0.05, 1e-3
+    survey.std = std
+    survey.eps = eps
+    survey.dobs = dobs
+
+    # Define datamisfit portion of objective function
+    dmisfit = DataMisfit.l2_DataMisfit(survey)
+
+
+Regularization
+**************
+
+Objective function includes both data misfit and regularization term, :math:`\phi_m` :
+
+.. math::
+
+    \phi = \phi_d + \beta \phi_m
+
+We use Tiknov-style regularization including both smoothness and smallness terms. For further details of this See XXX.
+
+In addition, considering the geometry of the gradient array: a single source and distributed receivers, this specific DC survey may not have much depth resolution similar to magnetic and gravity data. Depth weighting (:math:`\frac{1}{(z-z_0)^3}`) is often used to handle this. And with this weight we form **Regularization** class:
+
+.. code-block:: python
+
+    # Depth weighting
+    depth = 1./(abs(mesh.gridCC[:,2]-zc))**1.5
+    depth = depth/depth.max()
+
+    # Define regulatization (model objective function)
+    reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind)
+    reg.wght = depth[~airind]
+    reg.alpha_s = 1e-1
+    reg.alpha_x = 1.
+    reg.alpha_y = 1.
+    reg.alpha_z = 1.
+
+Optimization
+************
+
+To minimize the objective function, an optimization scheme is required. **Optimization** class handles this, and we use Inexact Gauss Newton Scheme CITExxx.
+
+.. code-block:: python
+
+    opt = Optimization.InexactGaussNewton(maxIter = 20)
+
+
+InvProblem
+**********
+
+Both **DatamMisfit** and **Regularization** classes are created, and an **Optimiztion** is chosen. Still, they need to be declared as a minimization problem:
+
+.. math::
+
+    \text{minimize} \ \phi_d + \beta \phi_m \ \\
+    s.t. \ \text{some constratins}
+
+**InvProblem** class can be set with **DatamMisfit**,  **Regularization** and **Optimiztion** classes.
+
+.. code-block:: python
+
+    invProb = InvProblem.BaseInvProblem(dmisfit, reg, opt)
+
+Inversion
+*********
+
+We have stated our inverse problem, but a conductor is required, who directs our inverse problem. **Directives** conducts our **Inversion**. For instance, the trade-off parameter, :math:`\beta` needs to be estimated, and sometimes cooled in the inversion iterations. A target misfit is need to be set usually upon discrepancy principle (:math:`\phi_d^\ast = 0.5 N_d`, where :math:`N_d` is the number of data).
+
+.. code-block:: python
+
+    # Define Directives
+    betaest = Directives.BetaEstimate_ByEig(beta0_ratio=1e0)
+    beta = Directives.BetaSchedule(coolingFactor=5, coolingRate=2)
+    target = Directives.TargetMisfit()
+
+    # Define Inversion class
+    inv = Inversion.BaseInversion(invProb, directiveList=[beta, betaest, target])
+
+Run
+***
+
+Now we all set. Initial model is assumed to be homogenous.
+
+.. code-block:: python
+
+    # Create inital and reference model (1e-4 S/m)
+    m0 = np.ones(mesh.nC)[~airind]*np.log(1e-4)
+
+    # Run inversion
+    mopt = inv.run(m0)
+
+Inversion reached to the target misfit, hence we fit the observed data.
+
+.. figure:: images/dc/DCObsPred.png
+    :align: center
+    :width: 100%
+    :name: DCObsPred
+
+    Observed and Predicted DC data.
+
+A 3D conductivity model is recovered and compared with the true conductivity model. A conductive pipe at depth is recovered!
+
+.. figure:: images/dc/Cond3D.png
+    :align: center
+    :width: 80%
+    :name: Cond3D
+
+    True and recovered conductivity models.
 
 .. _SimPEG: http://simpeg.xyz
