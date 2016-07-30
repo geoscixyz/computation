@@ -6,7 +6,7 @@ import subprocess
 # Testing for the notebooks - use nbconvert to execute all cells of the
 # notebook
 
-dirname, filename = os.path.split(os.path.abspath(__file__))
+dirname, _ = os.path.split(os.path.abspath(__file__))
 NBDIR = os.path.sep.join(dirname.split(os.path.sep)[:-1]+['notebooks'])
 
 # TESTDIR = os.path.split(os.path.abspath(__file__))
@@ -31,13 +31,20 @@ def get(nbname, nbpath):
     def test_func(self):
         print '\n--------------- Testing {0} ---------------'.format(nbname)
         print '   {0}'.format(nbpath)
-        nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
-                                  '--execute',
-                                  '--ExecutePreprocessor.timeout=120'],
-                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE)
-        output, err = nbexe.communicate()
-        check = nbexe.returncode
+        # nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
+        #                           '--execute',
+        #                           '--ExecutePreprocessor.timeout=120'],
+        #                          stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+        #                          stderr=subprocess.PIPE)
+        # output, err = nbexe.communicate()
+        # check = nbexe.returncode
+        check = subprocess.call(['jupyter', 'nbconvert', '{0}'.format(nbpath),
+                                 '--execute',
+                                 '--ExecutePreprocessor.timeout=120'],
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE
+
+                                )
         if check == 0:
             print '\n ..... {0} Passed ..... \n'.format(nbname)
             subprocess.call(['rm', '{0}.html'.format(
