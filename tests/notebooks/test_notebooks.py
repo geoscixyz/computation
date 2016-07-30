@@ -7,7 +7,7 @@ import subprocess
 # notebook
 
 dirname, _ = os.path.split(os.path.abspath(__file__))
-NBDIR = os.path.sep.join(dirname.split(os.path.sep)[:-1]+['notebooks'])
+NBDIR = os.path.sep.join(dirname.split(os.path.sep)[:-2]+['notebooks'])
 
 # TESTDIR = os.path.split(os.path.abspath(__file__))
 # NBDIR = os.path.sep.join(TESTDIR[:-1] + ['notebooks']) # where are the notebooks?
@@ -31,20 +31,13 @@ def get(nbname, nbpath):
     def test_func(self):
         print '\n--------------- Testing {0} ---------------'.format(nbname)
         print '   {0}'.format(nbpath)
-        # nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
-        #                           '--execute',
-        #                           '--ExecutePreprocessor.timeout=120'],
-        #                          stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-        #                          stderr=subprocess.PIPE)
-        # output, err = nbexe.communicate()
-        # check = nbexe.returncode
-        check = subprocess.call(['jupyter', 'nbconvert', '{0}'.format(nbpath),
-                                 '--execute',
-                                 '--ExecutePreprocessor.timeout=120'],
-                                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE
-
-                                )
+        nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
+                                  '--execute',
+                                  '--ExecutePreprocessor.timeout=120'],
+                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE)
+        output, err = nbexe.communicate()
+        check = nbexe.returncode
         if check == 0:
             print '\n ..... {0} Passed ..... \n'.format(nbname)
             subprocess.call(['rm', '{0}.html'.format(
