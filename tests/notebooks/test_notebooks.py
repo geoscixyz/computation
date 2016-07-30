@@ -6,7 +6,7 @@ import subprocess
 # Testing for the notebooks - use nbconvert to execute all cells of the
 # notebook
 
-dirname, _ = os.path.split(os.path.abspath(__file__))
+dirname, _ = os.path.split(os.path.relpath(__file__))
 NBDIR = os.path.sep.join(dirname.split(os.path.sep)[:-2]+['notebooks'])
 
 # TESTDIR = os.path.split(os.path.abspath(__file__))
@@ -20,7 +20,7 @@ def setUp():
     for dirname, dirnames, filenames in os.walk(NBDIR):
         for filename in filenames:
             if filename.endswith('.ipynb') and not filename.endswith('-checkpoint.ipynb'):
-                nbpaths.append(os.path.abspath(dirname) + os.path.sep + filename) # get abspath of notebook
+                nbpaths.append(os.path.relpath(dirname) + os.path.sep + filename) # get abspath of notebook
                 nbnames.append(''.join(filename[:-6])) # strip off the file extension
     return nbpaths, nbnames
 
@@ -41,8 +41,8 @@ def get(nbname, nbpath):
         if check == 0:
             print '\n ..... {0} Passed ..... \n'.format(nbname)
             subprocess.call(['rm', '{0}.html'.format(
-                             os.path.sep.join(os.getcwd().split(os.path.sep)
-                             + [nbpath.split(os.path.sep)[-1][:-6]]
+                             os.path.sep.join(os.getcwd().split(os.path.sep) +
+                             [nbpath.split(os.path.sep)[-1][:-6]]
                              ))])
         else:
             print '\n <<<<< {0} FAILED >>>>> \n'.format(nbname)
@@ -51,7 +51,6 @@ def get(nbname, nbpath):
         self.assertTrue(check == 0)
 
     return test_func
-
 
 
 attrs = dict()

@@ -13,6 +13,9 @@ class Doc_Test(unittest.TestCase):
         doctrees_path = os.path.sep.join(self.path_to_docs.split(os.path.sep)+['_build']+['doctrees'])
         html_path = os.path.sep.join(self.path_to_docs.split(os.path.sep)+['_build']+['html'])
 
+        print self.path_to_docs
+        print html_path
+
         check = subprocess.call(["sphinx-build", "-nW", "-b", "html", "-d",
             "%s"%(doctrees_path) ,
             "%s"%(self.path_to_docs),
