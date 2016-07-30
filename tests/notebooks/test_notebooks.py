@@ -6,7 +6,7 @@ import subprocess
 # Testing for the notebooks - use nbconvert to execute all cells of the
 # notebook
 
-dirname, _ = os.path.split(os.path.relpath(__file__))
+dirname, _ = os.path.split(os.path.abspath(__file__))
 NBDIR = os.path.sep.join(dirname.split(os.path.sep)[:-2]+['notebooks'])
 
 # TESTDIR = os.path.split(os.path.abspath(__file__))
@@ -20,7 +20,7 @@ def setUp():
     for dirname, dirnames, filenames in os.walk(NBDIR):
         for filename in filenames:
             if filename.endswith('.ipynb') and not filename.endswith('-checkpoint.ipynb'):
-                nbpaths.append(os.path.relpath(dirname) + os.path.sep + filename) # get abspath of notebook
+                nbpaths.append(os.path.abspath(dirname) + os.path.sep + filename) # get abspath of notebook
                 nbnames.append(''.join(filename[:-6])) # strip off the file extension
     return nbpaths, nbnames
 
