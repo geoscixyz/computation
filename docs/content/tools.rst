@@ -81,7 +81,7 @@ This is particularly important when doing division::
     0
 
 .. note::
-    
+
     If that scares you, you can always use division from the future! :code:`from __future__ import division` see PEP0238_
 
 is integer division, while::
@@ -159,6 +159,7 @@ If, elif, else
 Conditionals in Python_ are implemented using :code:`if`, :code:`elif`, :code:`else`
 
     >>> # Pick a random number between 0 and 100
+    >>> import numpy as np
     >>> number = (100.*np.random.rand(1)).round() # make it an integer
     >>> if number > 42:
     ...     print '%i is too high'%number
