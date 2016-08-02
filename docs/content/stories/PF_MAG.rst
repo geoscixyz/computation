@@ -144,9 +144,8 @@ Line    Input            Description
 10      VALUE 0 1        Lower and upper bound values
 11      VALUE 0 1 1 1    Lp-norms applied on model and model gradients (:math:`p,q_x,q_y,q_z`)
 12      DEFAULT          Treshold parameter for the norms (:math:`\epsilon_p,\epsilon_q`) | DEFAULT
+Note                     * UBC file format
 ====    ==============   ===================================================================================
-(* UBC file format)
-
 
 We will use each elements later, but for now, this how the inversion
 is initiated.
