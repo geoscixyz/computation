@@ -421,7 +421,7 @@ true solution.
     # Load models
     m_lp = Mesh.TensorMesh.readModelUBC(mesh,work_dir+psep+"SimPEG_MAG_lplq.sus")
     m_l2 = Mesh.TensorMesh.readModelUBC(mesh,work_dir+psep+"SimPEG_MAG_l2l2.sus")
-    m_true = Mesh.TensorMesh.readModelUBC(mesh,work_dir+psep+"Initm.mod.sus")
+    m_true = Mesh.TensorMesh.readModelUBC(mesh,work_dir+psep+"Initm.sus")
 
     m_lp[m_lp==-100] = np.nan
     m_l2[m_l2==-100] = np.nan
