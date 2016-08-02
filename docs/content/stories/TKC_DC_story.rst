@@ -184,7 +184,7 @@ Since field object for the background model is generatec so, we can obtain secon
     phi0 = f0[src, 'phi']
     phi_sec = phi - phi0
 
-We present plan and section views of currents, charges, and secondary potentials in numerefXXX`DCfields`.
+We present plan and section views of currents, charges, and secondary potentials in :numref:`DCfields`.
 
 .. figure:: images/dc/DCfields.png
     :align: center
@@ -227,7 +227,7 @@ This will compute the field inside of the code then evaluate for data at Rx loca
 Inversion Elements
 ------------------
 
-Our goal here is finding a 3D conductivity model, which explains the observed data shown in numerefXXX`DCdata`. Inversion elements (red box in numerefXXX`SimPEGFramework`) will handle this task with an ability to simluate forward problem. We go through each element and briefly explain.
+Our goal here is finding a 3D conductivity model, which explains the observed data shown in :numref:`DCdata`. Inversion elements (red box in :numref:`SimPEGFramework`) will handle this task with an ability to simluate forward problem. We go through each element and briefly explain.
 
 Mapping
 *******

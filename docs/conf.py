@@ -313,3 +313,6 @@ def _supress_nonlocal_image_warn(self, msg, node, **kwargs):
         self._warnfunc(msg, '%s:%s' % get_source_line(node))
 
 sphinx.environment.BuildEnvironment.warn_node = _supress_nonlocal_image_warn
+
+# number figures
+numfig = True
