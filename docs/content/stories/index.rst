@@ -16,6 +16,6 @@ Stories
     :maxdepth: 2
 
     template
-    DC
+    TKC_DC_story
 
 .. _SimPEG: http://simpeg.xyz

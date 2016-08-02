@@ -56,7 +56,6 @@ Making a reproducible plot
     mesh = SimPEG.Mesh.TensorMesh([10,10])
     mesh.plotGrid()
 
-
 Model and Mapping
 ^^^^^^^^^^^^^^^^^
 
