@@ -1,11 +1,21 @@
 from SimPEG import Mesh, Utils, np, Maps, Survey
 from SimPEG.EM.Static import DC, IP
-from SimPEG import DataMisfit, Regularization, Optimization, Directives, InvProblem, Inversion
-from pymatsolver import MumpsSolver
+from SimPEG import (DataMisfit, Regularization, Optimization, Directives,
+                    InvProblem, Inversion)
 import sys
 sys.path.append("./utilcodes/")
 from vizutils import gettopoCC, viz, vizEJ
 import pickle
+import warnings
+try:
+    from pymatsolver import MumpsSolver
+    solver = MumpsSolver
+except ImportError, e:
+    from SimPEG import SolverLU
+    warnings.warn('Mumps solver not installed. Using SolverLU... will be '
+                  'slower. To install Mumps, see '
+                  'https://github.com/rowanc1/pymatsolver')
+    solver = SolverLU
 
 
 ########################
@@ -77,13 +87,13 @@ src1 = DC.Src.Dipole([rx_x], Aloc1_x, Bloc1_x)
 survey = DC.Survey([src1])
 # Define problem and set solver
 problemDC = DC.Problem3D_CC(mesh)
-problemDC.Solver = MumpsSolver
+problemDC.Solver = solver
 # Pair problem and survey
 problemDC.pair(survey)
 
 
 # Load DC inversion results
-DCresults = pickle.load(open( "DCresults", "rb" ))
+DCresults = pickle.load(open( "DCresults.p", "rb" ))
 
 # Get inversion model
 sigopt = DCresults['sigma_inv']
@@ -95,7 +105,7 @@ sigopt = DCresults['sigma_inv']
 ########################
 
 # Load IP data and model object
-IPfwd = pickle.load(open( "IPfwd", "rb" ))
+IPfwd = pickle.load(open( "IPfwd.p", "rb" ))
 # print IPfwd.keys()
 
 # Get inversion model
@@ -109,7 +119,7 @@ IPdobs = IPfwd['IPObs']
 mapping = Maps.InjectActiveCells(mesh, ~airind, 0.)
 fopt = problemDC.fields(sigopt)
 problemIP = IP.Problem3D_CC(mesh, rho=1./sigopt, Ainv=problemDC.Ainv, f=fopt, mapping=mapping)
-problemIP.Solver = MumpsSolver
+problemIP.Solver = solver
 surveyIP = IP.Survey([src1])
 problemIP.pair(surveyIP)
 

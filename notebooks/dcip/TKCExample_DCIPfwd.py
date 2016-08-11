@@ -1,10 +1,19 @@
 from SimPEG import Mesh, Utils, np, Maps, Survey
 from SimPEG.EM.Static import DC, IP
-from pymatsolver import MumpsSolver
 import sys
 sys.path.append("./utilcodes/")
 from vizutils import gettopoCC, viz, vizEJ
 import pickle
+import warnings
+try:
+    from pymatsolver import MumpsSolver
+    solver = MumpsSolver
+except ImportError, e:
+    from SimPEG import SolverLU
+    warnings.warn('Mumps solver not installed. Using SolverLU... will be '
+                  'slower. To install Mumps, see '
+                  'https://github.com/rowanc1/pymatsolver')
+    solver = SolverLU
 
 
 ########################
@@ -85,7 +94,7 @@ m0 = np.ones_like(sigma)[~airind]*np.log(1e-4)
 survey = DC.Survey([src1])
 # Define problem and set solver
 problem = DC.Problem3D_CC(mesh, mapping=mapping)
-problem.Solver = MumpsSolver
+problem.Solver = solver
 # Pair problem and survey
 problem.pair(survey)
 
