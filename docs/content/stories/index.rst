@@ -15,7 +15,6 @@ Stories
 .. toctree::
     :maxdepth: 2
 
-    template
     TKC_DC_story
 
 .. _SimPEG: http://simpeg.xyz
