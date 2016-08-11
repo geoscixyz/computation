@@ -145,8 +145,7 @@ surveyIP.dobs = IPdobs
 # Define datamisfit portion of objective function
 dmisfit = DataMisfit.l2_DataMisfit(surveyIP)
 # Define regulatization (model objective function)
-reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind)
-reg.wght = depth[~airind]
+reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind, cell_weights=depth[~airind])
 # reg.wght = weight
 opt = Optimization.ProjectedGNCG(maxIter = 15)
 opt.lower = 0.

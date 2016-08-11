@@ -12,6 +12,7 @@ import pickle
 try:
     from pymatsolver import MumpsSolver
     solver = MumpsSolver
+    print('Using MUMPS.')
 except ImportError, e:
     from SimPEG import SolverLU
     warnings.warn('Mumps solver not installed. Using SolverLU... will be '
@@ -122,8 +123,7 @@ survey.dobs = dobs
 # Define datamisfit portion of objective function
 dmisfit = DataMisfit.l2_DataMisfit(survey)
 # Define regulatization (model objective function)
-reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind)
-reg.wght = depth[~airind]
+reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind, cell_weights=depth[~airind])
 opt = Optimization.InexactGaussNewton(maxIter = 20)
 invProb = InvProblem.BaseInvProblem(dmisfit, reg, opt)
 # Define inversion parameters
@@ -132,7 +132,7 @@ betaest = Directives.BetaEstimate_ByEig(beta0_ratio=1e0)
 save = Directives.SaveOutputEveryIteration()
 savemodel = Directives.SaveModelEveryIteration()
 target = Directives.TargetMisfit()
-inv = Inversion.BaseInversion(invProb, directiveList=[beta,betaest, save, target, savemodel])
+inv = Inversion.BaseInversion(invProb, directiveList=[beta,betaest, save, target])
 reg.alpha_s = 1e-1
 reg.alpha_x = 1.
 reg.alpha_y = 1.
@@ -153,7 +153,7 @@ dpred = survey.dpred(np.log(sigopt[~airind]))
 
 # Pickle results for easy access
 Results = {"sigma_true":sigma, "sigma_inv":sigopt, "Obs":dobs, "Pred":dpred}
-outputs = open("DCresults", 'wb')
+outputs = open("DCresults.p", 'wb')
 pickle.dump(Results, outputs)
 outputs.close()
 
