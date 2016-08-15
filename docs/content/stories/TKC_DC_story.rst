@@ -26,7 +26,7 @@ Maxwell's equations:
     \vec{e} = -\nabla \phi
 
 .. math::
-    \nabla \cdot \vec{j} = -\vec{j}_s = I_0 (\delta(\vec{r}-\vec{r}_+)-\delta(\vec{r}-\vec{r}_-))
+    \nabla \cdot \vec{j} = -\nabla \cdot \vec{j}_s = I_0 (\delta(\vec{r}-\vec{r}_+)-\delta(\vec{r}-\vec{r}_-))
 
 .. math::
     \vec{j} \cdot \hat{n} \ \Big|_{\partial \Omega} = 0
