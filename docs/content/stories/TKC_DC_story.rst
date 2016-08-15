@@ -5,7 +5,9 @@ DC resistivity
 
 .. topic:: Purpose
 
-    Understand basic setup and physics of a direct current (DC) resistivity survey within the context of a kimberlite exploration. Run DC forward modelling and inversion using SimPEG-Static package.
+    Understand basic setup and physics of a direct current (DC) resistivity
+    survey within the context of a kimberlite exploration. Run DC forward
+    modelling and inversion using SimPEG-Static package.
 
 .. image:: images/tkc/dc.png
     :width: 80%
@@ -14,7 +16,8 @@ DC resistivity
 Set-up
 ------
 
-Physical behavior of DC resistivity survey is governed by steady-state Maxwell's equation:
+The physical behavior of DC resistivity survey is governed by the steady-state
+Maxwell's equations:
 
 .. math::
     \vec{j} = \sigma \vec{e}
@@ -23,12 +26,13 @@ Physical behavior of DC resistivity survey is governed by steady-state Maxwell's
     \vec{e} = -\nabla \phi
 
 .. math::
-    \nabla \cdot \vec{j} = -\vec{j}_s = I_0 (\delta(\vec{r}-\vec{r}_+)-\delta(\vec{r}-\vec{r}_-))
+    \nabla \cdot \vec{j} = -\nabla \cdot \vec{j}_s = I_0 (\delta(\vec{r}-\vec{r}_+)-\delta(\vec{r}-\vec{r}_-))
 
 .. math::
     \vec{j} \cdot \hat{n} \ \Big|_{\partial \Omega} = 0
 
 
+where:
 - :math:`\vec{j}`: Current density (A/m :math:`^2`)
 
 - :math:`\vec{e}`: Electric field (V/m)
@@ -38,9 +42,23 @@ Physical behavior of DC resistivity survey is governed by steady-state Maxwell's
 - :math:`\delta`: Volumetric delta function (m :math:`^{-3}`)
 
 
-Consider a simple gradient array having a pair of A (+) and B (+) current electrodes (Tx) with multiple M (+) and N (-) potential electrodes (Rx). Using giant battery (?), we make significant potential difference allowing electrical currents flow A to B electrodes. If the earth includes conductors or resistors that will distorts current flows, and measured potential differences on the surface electrodes (MN) will be reflective on those distortions. Typically kimberlitic pipe (including diamonds) will be more conductive than the background rock (granitic) hence, measured potential difference will be low. That is, contrasts in electrical conductivity between different rocks induce anomalous voltages. From the observed voltages, we want to estimate conductivity distribution of the earth. We use a geophysical inversion technique to do this procedure.
+Consider a simple gradient array having a pair of A (+) and B (+) current
+electrodes (Tx) with multiple M (+) and N (-) potential electrodes (Rx). Using
+giant battery (?), we setup a significant potential difference allowing
+electrical currents to flow between the A to B electrodes. If the earth
+includes conductors or resistors, these will distorts current flow, and
+measured potential differences on the surface electrodes (MN) will be
+reflective of those distortions. Typically kimberlitic pipes (including those
+containing diamonds!) will be more conductive than the background rock
+(granitic), hence, the measured potential difference will be low. That is,
+contrasts in electrical conductivity between different rocks induce anomalous
+voltages. From the observed voltages, we want to estimate conductivity
+distribution of the earth. We use a geophysical inversion technique to do this
+procedure.
 
-We work through each step of geophysical inversion using SimPEG-Static package under SimPEG's frame work having two main items: a) Forward simulation and b) Inversion.
+We work through each step of geophysical inversion using `SimPEG-Static
+package <http://docs.simpeg.xyz/content/dc/index.html>`_ under SimPEG's
+framework having two main items: a) Forward simulation and b) Inversion.
 
 .. figure:: images/SimPEGFramework.png
     :width: 80%
@@ -53,14 +71,28 @@ We work through each step of geophysical inversion using SimPEG-Static package u
 Forward simulation
 ------------------
 
-A forward simulation of DC requires Survey and Problem classes. We need to pass current and potential electrode locations to a DC survey class. Physical behavior of DC is governed by static Maxwell's equations, and a DC problem class handles this by solving a corresponding partial different equation in a discrete space. For this, the earth earth needs to be discretized to solve corresponding partial differential equation. The Problem class computes fields in full discretized domain, and the Survey class evaluates data at potential electrodes using the fields. The Survey and Problem classes need to share information hence, we pair them.
+A forward simulation of a DC experiment requires `Survey
+<http://docs.simpeg.xyz/content/api_core/api_ForwardProblem.html?#survey>`_
+and `Problem <http://docs.simpeg.xyz/content/api_core/api_ForwardProblem.html
+?#problem-class>`_ classes. We need to the pass current and potential
+electrode locations to a DC survey class. The physical behavior of DC fields
+and fluxes are governed by the static Maxwell's equations. To numerically
+work with these equations, we use the DC problem class, which handles this by solving a
+corresponding partial different equation in a discrete space. For this, the
+earth needs to be discretized to solve corresponding partial
+differential equation. The Problem class computes fields in full discretized
+domain, and the Survey class evaluates data at potential electrodes using the
+fields. The Survey and Problem classes need to share information hence, we
+pair them.
 
 
 Mesh
 ****
 
-We use a 3D tensor mesh to discretize the earth having 25x25x25 m core cell size.
-Smaller vertical size of the cell (dz) is used close to the topographic surface (12.5 m), and padding cells are used to satisfies the natural boundary condition imposed.
+We use a 3D tensor mesh to discretize the earth having 25x25x25 m core cell
+size. Smaller vertical size of the cell (dz) is used close to the topographic
+surface (12.5 m), and padding cells are used to satisfies the natural boundary
+condition imposed.
 
 .. plot::
 
@@ -91,7 +123,9 @@ Smaller vertical size of the cell (dz) is used close to the topographic surface 
 Survey
 ******
 
-We use a simple gradient array having a pair of current electrodes (AB), and multiple potential electrodes (MN).  The lengths of AB and MN electrodes are 1200 and 25 m, respectively.
+We use a simple gradient array having a pair of current electrodes (AB), and
+multiple potential electrodes (MN).  The lengths of AB and MN electrodes are
+1200 and 25 m, respectively.
 
 
 .. figure:: images/dc/GradientArray.png
@@ -101,7 +135,8 @@ We use a simple gradient array having a pair of current electrodes (AB), and mul
 
     Gradient array
 
-Once we have obtained locations of AB (Src) and MN (Rx) electrodes, we can generate **Survey** class:
+Once we have obtained locations of AB (Src) and MN (Rx) electrodes, we can
+generate **Survey** class:
 
 .. code-block:: python
 
@@ -128,7 +163,9 @@ Once we have obtained locations of AB (Src) and MN (Rx) electrodes, we can gener
 Fields and Data
 ***************
 
-By solving the DC equations, we compute electrical potential (:math:`\phi`) at every cells. **Problem** class does this, but it still requires survey information hence we pair it to the **Survey** class:
+By solving the DC equations, we compute electrical potential (:math:`\phi`) at
+every cell. The **Problem** class does this, but it still requires survey
+information hence we pair it to the **Survey** class:
 
 .. code-block:: python
 
@@ -139,14 +176,18 @@ By solving the DC equations, we compute electrical potential (:math:`\phi`) at e
     # Pair problem and survey
     problem.pair(survey)
 
-Here, we used ``DC.Problem3D_CC``, which means 3D space and :math:`\phi` is defined at the cell center. Now, we are ready to run DC forward modelling! For this modelling, inside of the code, there are two steps:
+Here, we used ``DC.Problem3D_CC``, which means 3D space and :math:`\phi` is
+defined at the cell center. Now, we are ready to run DC forward modelling! For
+this modelling, inside of the code, there are two steps:
 
 1. Compute fields (:math:`\phi` at every cells)
 2. Evaluate at Rx location (potential difference at MN electrodes)
 
 Consider two conductivity models:
 
-- Homogeneous background below topographic surface: ``sigma0`` (:math:`10^{-4}` S/m)
+- Homogeneous background below topographic surface: ``sigma0``
+  (:math:`10^{-4}` S/m)
+
 - Includes diamond pipes: ``sigma`` (S/m)
 
 .. code-block:: python
@@ -167,7 +208,11 @@ Then we compute fields for both conductivity models:
     f0 = problem.fields(sigma0)
     f = problem.fields(sigma)
 
-Now ``f`` and ``f0`` are **Field** objects including computed :math:`\phi` everywhere. However, this **Field** object know how to compute both :math:`\vec{e}`, :math:`\vec{j}`, and electrical charge, :math:`\int_V \rho_v dV` (:math:`\rho_v` is volumetric charge density). Note that if we know :math:`\phi`, all of them can be computed for a corresponding source:
+Now ``f`` and ``f0`` are **Field** objects including computed :math:`\phi`
+everywhere. However, this **Field** object know how to compute both
+:math:`\vec{e}`, :math:`\vec{j}`, and electrical charge, :math:`\int_V \rho_v
+dV` (:math:`\rho_v` is volumetric charge density). Note that if we know
+:math:`\phi`, all of them can be computed for a corresponding source:
 
 .. code-block:: python
 
@@ -176,7 +221,8 @@ Now ``f`` and ``f0`` are **Field** objects including computed :math:`\phi` every
     j = f[src, 'j']
     charge = f[src, 'charge']
 
-Since field object for the background model is generatec so, we can obtain secondary potential:
+Since the field object for the background model is generic, we can obtain
+secondary potential:
 
 .. code-block:: python
 
@@ -184,22 +230,35 @@ Since field object for the background model is generatec so, we can obtain secon
     phi0 = f0[src, 'phi']
     phi_sec = phi - phi0
 
-We present plan and section views of currents, charges, and secondary potentials in :numref:`DCfields`.
+We present plan and section views of currents, charges, and secondary
+potentials in :numref:`DCfields`.
 
 .. figure:: images/dc/DCfields.png
     :align: center
     :width: 100%
     :name: DCfields
 
-    DC fields. Left, middle, and right panels show currents, charges, and secondary potentials.
+    DC fields. Left, middle, and right panels show currents, charges, and
+    secondary potentials.
 
-Current flows from A (+) to B (-) electrode (left to right). Kimberlite pipe should be more conductive than the background considering more currents are flowing through the pipe (See distortions of the current path in the left panel).
+Current flows from A (+) to B (-) electrode (left to right). Kimberlite pipe
+should be more conductive than the background considering more currents are
+flowing through the pipe (See distortions of the current path in the left
+panel).
 
-Electrical charges (the middle panel) supports that the pipe is conductive since left and right side of the pipe has negative and positive charges, respectvely. In addition, charges only built on the boundary of the conductive pipe.
+The distribution of electrical charges (the middle panel) supports that the
+pipe is conductive since left and right side of the pipe has negative and
+positive charges, respectively. In addition, charges only built on the
+boundary of the conductive pipe.
 
-Secondary potential (the right panel) is important since it shows response from the kimberlite pipe, which often called "Anomalous potential". Usually, removing background response is a good way to see how much anomalous response could be obtained for the target.
+The secondary potential (the right panel) is important since it shows response
+from the kimberlite pipe, which often called "Anomalous potential". Usually,
+removing background response is a good way to see how much anomalous response
+could be obtained for the target.
 
-On the other hand, we cannot measure those fields everywhere but measure potential differences at MN electrodes (Rx) hence we need to evalaute them from the fields:
+On the other hand, we cannot measure those fields everywhere but measure
+potential differences at MN electrodes (Rx) hence we need to evaluate them
+from the fields:
 
 .. code-block:: python
 
@@ -214,7 +273,14 @@ If the field has not been computed then we do:
     # Get observed data
     dobs = survey.dpred(sigma)
 
-This will compute the field inside of the code then evaluate for data at Rx locations. Below image shows the computed DC data. Smaller potentials are obtained at the center locations, which implies the existence of conductive materials. Current easily flows with conductive materials, which means less potential is required to path through them, hence for resistive materials we get greater potential difference measured on the surface. The measured potential provides some idea of the earth; however, this is not enough, we want a 3D distribution of the conductivity!
+This will compute the field inside of the code then evaluate for data at Rx
+locations. Below image shows the computed DC data. Smaller potentials are
+obtained at the center locations, which implies the existence of conductive
+materials. Current easily flows with conductive materials, which means less
+potential is required to path through them, hence for resistive materials we
+get greater potential difference measured on the surface. The measured
+potential provides some idea of the earth; however, this is not enough, we
+want a 3D distribution of the conductivity!
 
 .. figure:: images/dc/DCdata.png
     :align: center
@@ -227,23 +293,39 @@ This will compute the field inside of the code then evaluate for data at Rx loca
 Inversion Elements
 ------------------
 
-Our goal here is finding a 3D conductivity model, which explains the observed data shown in :numref:`DCdata`. Inversion elements (red box in :numref:`SimPEGFramework`) will handle this task with an ability to simluate forward problem. We go through each element and briefly explain.
+Our goal here is finding a 3D conductivity model which explains the observed
+data shown in :numref:`DCdata`. Inversion elements (red box in
+:numref:`SimPEGFramework`) will handle this task with an ability to simulate
+forward problem. We go through each element and briefly explain.
 
 Mapping
 *******
 
-For the simulation, we used 3D conductivity model defined in every cell center location. However, for the inversion we may not want to estimate conductivity at every cell. For instance, our domain include some air cells, and we already know well about the conductivity of the air (:math:`10^{-8} \approx 0`) hence, those air cell should be excluded from the inversion model, :math:`m`. Accordingly, a mapping is required moving from the inversion model to conductivity model defined at whole discrete domain:
+For the simulation, we used a 3D conductivity model, with a value defined in
+every cell center location. However, for the inversion, we may not want to
+estimate conductivity at every cell. For instance, our domain include some air
+cells, and we already know well about the conductivity of the air
+(:math:`10^{-8} \approx 0`) hence, those air cell should be excluded from the
+inversion model, :math:`m`. Accordingly, a mapping is required moving from the
+inversion model to conductivity model defined at whole discrete domain:
 
 .. math::
     \sigma  = \mathcal{M}(m)
 
-In addition, conductivity varies logarithmically we often use log conductivity as our inversion model (:math:`m = log (\sigma)`). So, our inversion model is log conductivity only defined below the subsurface cells, and this can be expressed as
+In addition, conductivity is strictly positive and varies logarithmically, so
+we often use log conductivity as our inversion model (:math:`m = log
+(\sigma)`). Our inversion model is log conductivity only defined below the
+subsurface cells, and this can be expressed as
 
 .. math::
 
     \sigma = \mathcal{M}_{exp}\Big(\mathcal{M}_{act} (m)\Big),
 
-where :math:`\mathcal{M}_{act}(\cdot)` is a ``InjectActiveCells`` map, which takes subsurface cell and surject to full domain including air cells, and :math:`\mathcal{M}_{exp}(\cdot)` is an ``ExpMap`` map takes log conductivity to conductivity. Combination of two maps are required to get :math:`\sigma` from :math:`m`, which can be codified as
+where :math:`\mathcal{M}_{act}(\cdot)` is a ``InjectActiveCells`` map, which
+takes subsurface cell and surject to full domain including air cells, and
+:math:`\mathcal{M}_{exp}(\cdot)` is an ``ExpMap`` map takes log conductivity
+to conductivity. Combination of two maps are required to get :math:`\sigma`
+from :math:`m`, which can be codified as
 
 .. code-block:: python
 
@@ -263,13 +345,17 @@ Generated mapping should be passed to **Problem** class:
 Data Misfit
 ***********
 
-Finding a model explaining the observed data requires a measure between observed (:math:`\mathbf{d}^{obs}`) and predicted data (:math:`\mathbf{d}^{dpred}`):
+Finding a model explaining the observed data requires a measure between
+observed (:math:`\mathbf{d}^{obs}`) and predicted data
+(:math:`\mathbf{d}^{dpred}`):
 
 .. math::
 
     \phi_d = 0.5\| \mathbf{W}_d (\mathbf{d}^{pred}-\mathbf{d}^{obs})\|^2_2,
 
-where :math:`\mathbf{W}_d = \mathbf{diag}( \frac{1}{\% | \mathbf{d}^{obs} |+\epsilon} )` is the data weighting matrix. Uncertainty in the observed data is approximated as :math:`\% | \mathbf{d}^{obs} |+\epsilon`.
+where :math:`\mathbf{W}_d = \mathbf{diag}( \frac{1}{\% | \mathbf{d}^{obs}
+|+\epsilon} )` is the data weighting matrix. Uncertainty in the observed data
+is approximated as :math:`\% | \mathbf{d}^{obs} |+\epsilon`.
 
 .. code-block:: python
 
@@ -286,15 +372,21 @@ where :math:`\mathbf{W}_d = \mathbf{diag}( \frac{1}{\% | \mathbf{d}^{obs} |+\eps
 Regularization
 **************
 
-Objective function includes both data misfit and regularization term, :math:`\phi_m` :
+The objective function includes both data misfit and regularization terms,
+:math:`\phi_m` :
 
 .. math::
 
     \phi = \phi_d + \beta \phi_m
 
-We use Tiknov-style regularization including both smoothness and smallness terms. For further details of this See XXX.
+We use Tikhonov-style regularization including both smoothness and smallness
+terms. For further details of this See XXX.
 
-In addition, considering the geometry of the gradient array: a single source and distributed receivers, this specific DC survey may not have much depth resolution similar to magnetic and gravity data. Depth weighting (:math:`\frac{1}{(z-z_0)^3}`) is often used to handle this. And with this weight we form **Regularization** class:
+In addition, considering the geometry of the gradient array: a single source
+and distributed receivers, this specific DC survey may not have much depth
+resolution similar to magnetic and gravity data. Depth weighting
+(:math:`\frac{1}{(z-z_0)^3}`) is often used to handle this. And with this
+weight we form **Regularization** class:
 
 .. code-block:: python
 
@@ -313,7 +405,9 @@ In addition, considering the geometry of the gradient array: a single source and
 Optimization
 ************
 
-To minimize the objective function, an optimization scheme is required. **Optimization** class handles this, and we use Inexact Gauss Newton Scheme CITExxx.
+To minimize the objective function, an optimization scheme is required. The
+**Optimization** class handles this, and we use Inexact Gauss Newton Scheme
+CITExxx.
 
 .. code-block:: python
 
@@ -323,14 +417,18 @@ To minimize the objective function, an optimization scheme is required. **Optimi
 InvProblem
 **********
 
-Both **DatamMisfit** and **Regularization** classes are created, and an **Optimiztion** is chosen. Still, they need to be declared as a minimization problem:
+Both **DatamMisfit** and **Regularization** classes are created, and an
+**Optimization** is chosen. To pose the inverse problem, they need to be
+declared as an optimization problem:
 
 .. math::
 
     \text{minimize} \ \phi_d + \beta \phi_m \ \\
     s.t. \ \text{some constratins}
 
-**InvProblem** class can be set with **DatamMisfit**,  **Regularization** and **Optimiztion** classes.
+
+The **InvProblem** class can be set with **DatamMisfit**,  **Regularization** and **Optimiztion**
+classes.
 
 .. code-block:: python
 
@@ -339,7 +437,12 @@ Both **DatamMisfit** and **Regularization** classes are created, and an **Optimi
 Inversion
 *********
 
-We have stated our inverse problem, but a conductor is required, who directs our inverse problem. **Directives** conducts our **Inversion**. For instance, the trade-off parameter, :math:`\beta` needs to be estimated, and sometimes cooled in the inversion iterations. A target misfit is need to be set usually upon discrepancy principle (:math:`\phi_d^\ast = 0.5 N_d`, where :math:`N_d` is the number of data).
+We have stated our inverse problem, but a conductor is required, who directs
+our inverse problem. **Directives** conducts our **Inversion**. For instance,
+the trade-off parameter, :math:`\beta` needs to be estimated, and sometimes
+cooled in the inversion iterations. A target misfit is need to be set usually
+upon discrepancy principle (:math:`\phi_d^\ast = 0.5 N_d`, where :math:`N_d`
+is the number of data).
 
 .. code-block:: python
 
@@ -354,7 +457,7 @@ We have stated our inverse problem, but a conductor is required, who directs our
 Run
 ***
 
-Now we all set. Initial model is assumed to be homogenous.
+Now we all set. The initial model is assumed to be homogeneous.
 
 .. code-block:: python
 
@@ -364,7 +467,8 @@ Now we all set. Initial model is assumed to be homogenous.
     # Run inversion
     mopt = inv.run(m0)
 
-Inversion reached to the target misfit, hence we fit the observed data.
+The inversion runs and reaches to the target misfit, hence we fit the observed
+data.
 
 .. figure:: images/dc/DCObsPred.png
     :align: center
@@ -373,7 +477,8 @@ Inversion reached to the target misfit, hence we fit the observed data.
 
     Observed and Predicted DC data.
 
-A 3D conductivity model is recovered and compared with the true conductivity model. A conductive pipe at depth is recovered!
+A 3D conductivity model is recovered and compared with the true conductivity
+model. A conductive pipe at depth is recovered!
 
 .. figure:: images/dc/Cond3D.png
     :align: center
