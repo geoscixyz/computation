@@ -15,8 +15,6 @@ Stories
 .. toctree::
     :maxdepth: 2
 
-    template
-    PF_MAG
-    DC
+    TKC_DC_story
 
 .. _SimPEG: http://simpeg.xyz

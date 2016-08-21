@@ -83,8 +83,9 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', '_static']
+exclude_patterns = ['_build', '_static', 'content/stories/template*']
 
+linkcheck_ignore = ['http://mumps.enseeiht.fr/']
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
 #default_role = None
@@ -313,3 +314,6 @@ def _supress_nonlocal_image_warn(self, msg, node, **kwargs):
         self._warnfunc(msg, '%s:%s' % get_source_line(node))
 
 sphinx.environment.BuildEnvironment.warn_node = _supress_nonlocal_image_warn
+
+# number figures
+numfig = True
