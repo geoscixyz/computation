@@ -115,11 +115,18 @@ then be loaded and easily accessed through the Driver class:
 
     import SimPEG
     import SimPEG.PF as PF
+    from SimPEG.Utils import io_utils
     import os #hide
     import sys #hide
-    work_dir = os.getcwd() #hide
     psep = os.path.sep #hide
-    input_file = work_dir + psep + "content" + psep + "stories"+ psep + "files" + psep + "SimPEG_PF_Input.inp" #hide
+
+    # Start by downloading files from the remote repository
+    url = 'https://storage.googleapis.com/simpeg/tkc_synthetic/potential_fields/'
+    cloudfiles = ['MagData.obs', 'Mesh.msh',
+                  'Initm.sus', 'SimPEG_PF_Input.inp'] 
+
+    basePath = io_utils.remoteDownload(url, cloudfiles) #hide
+    input_file = basePath + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file)
 
     # Objects loaded from the input file are then accessible like this
@@ -162,9 +169,9 @@ with SimPEG's built-in functions.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    work_dir = os.getcwd() #hide
     psep = os.path.sep #hide
-    input_file = work_dir + psep + "files" + psep + "SimPEG_PF_Input.inp" #hide
+    basePath = os.getcwd() + psep + ".." + psep  + ".." + psep + 'SimPEGtemp'+ psep #hide
+    input_file = basePath + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
     initm = driver.m0 #hide
@@ -206,8 +213,8 @@ data above the synthetic kimberlite.
     import sys #hide
     import numpy as np #hide
     psep = os.path.sep #hide
-    work_dir = os.getcwd() + psep + "content" + psep + "stories"+ psep + "files" #hide
-    input_file = work_dir + psep + "SimPEG_PF_Input.inp" #hide
+    basePath = os.getcwd() + psep + 'SimPEGtemp'+ psep #hide
+    input_file = basePath + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
     # Get the survey
@@ -241,9 +248,9 @@ data above the synthetic kimberlite.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    work_dir = os.getcwd() #hide
     psep = os.path.sep #hide
-    input_file = work_dir + psep + "files" + psep + "SimPEG_PF_Input.inp" #hide
+    basePath = os.getcwd() + psep + ".." + psep  + ".." + psep + 'SimPEGtemp'+ psep #hide
+    input_file = basePath + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
 
     # Get the survey
@@ -338,8 +345,8 @@ process is implemented with a directive added to the inversion workflow.
     import sys #hide
     import numpy as np #hide
     psep = os.path.sep #hide
-    work_dir = os.getcwd() + psep + "content" + psep + "stories"+ psep + "files"
-    input_file = work_dir + psep + "SimPEG_PF_Input.inp" #hide
+    basePath = os.getcwd() + psep + 'SimPEGtemp'+ psep #hide
+    input_file = basePath + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
     survey = driver.survey #hide
@@ -397,8 +404,8 @@ process is implemented with a directive added to the inversion workflow.
     m_l2 = actvMap*reg.l2model
 
     # Once it is done, we can save the models (l2 and lp) to a file
-    Mesh.TensorMesh.writeModelUBC(mesh,work_dir + psep + 'SimPEG_MAG_l2l2.sus',m_l2)
-    Mesh.TensorMesh.writeModelUBC(mesh,work_dir + psep + 'SimPEG_MAG_lplq.sus',m_lp)
+    Mesh.TensorMesh.writeModelUBC(mesh,basePath + 'SimPEG_MAG_l2l2.sus',m_l2)
+    Mesh.TensorMesh.writeModelUBC(mesh,basePath + psep + 'SimPEG_MAG_lplq.sus',m_lp)
 
 
 Now we can plot sections and compare the smooth and compact models with the
@@ -411,16 +418,18 @@ true solution.
     import sys #hide
     import pylab as plt
     import numpy as np
+    import shutil
+    
     psep = os.path.sep #hide
-    work_dir = os.getcwd() + psep + "files" #hide
+    basePath = os.getcwd() + psep + ".." + psep  + ".." + psep + 'SimPEGtemp'+ psep #hide
 
     # Load the mesh, model and data
-    mesh = Mesh.TensorMesh.readUBC(work_dir+psep+"Mesh.msh")
+    mesh = Mesh.TensorMesh.readUBC(basePath+"Mesh.msh")
 
     # Load models
-    m_lp = Mesh.TensorMesh.readModelUBC(mesh,work_dir+psep+"SimPEG_MAG_lplq.sus")
-    m_l2 = Mesh.TensorMesh.readModelUBC(mesh,work_dir+psep+"SimPEG_MAG_l2l2.sus")
-    m_true = Mesh.TensorMesh.readModelUBC(mesh,work_dir+psep+"Initm.sus")
+    m_lp = Mesh.TensorMesh.readModelUBC(mesh,basePath+"SimPEG_MAG_lplq.sus")
+    m_l2 = Mesh.TensorMesh.readModelUBC(mesh,basePath+"SimPEG_MAG_l2l2.sus")
+    m_true = Mesh.TensorMesh.readModelUBC(mesh,basePath+"Initm.sus")
 
     m_lp[m_lp==-100] = np.nan
     m_l2[m_l2==-100] = np.nan
@@ -534,6 +543,9 @@ true solution.
     # cb.ax.xaxis.set_label_position('top')
     cb.set_label("Susceptibility (SI)",size=14)
     plt.show()
+
+    # Clean up the working directory
+    shutil.rmtree(basePath)
 
 Summary
 ^^^^^^^
