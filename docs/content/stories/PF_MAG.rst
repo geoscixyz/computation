@@ -115,7 +115,7 @@ then be loaded and easily accessed through the Driver class:
 
     import SimPEG
     import SimPEG.PF as PF
-    from SimPEG.Utils import io_utils
+    from SimPEG.Utils.io_utils import remoteDownload
     import os #hide
     import sys #hide
     psep = os.path.sep #hide
@@ -123,9 +123,9 @@ then be loaded and easily accessed through the Driver class:
     # Start by downloading files from the remote repository
     url = 'https://storage.googleapis.com/simpeg/tkc_synthetic/potential_fields/'
     cloudfiles = ['MagData.obs', 'Mesh.msh',
-                  'Initm.sus', 'SimPEG_PF_Input.inp'] 
+                  'Initm.sus', 'SimPEG_PF_Input.inp']
 
-    basePath = io_utils.remoteDownload(url, cloudfiles) #hide
+    basePath = remoteDownload(url, cloudfiles) #hide
     input_file = basePath + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file)
 
@@ -170,7 +170,7 @@ with SimPEG's built-in functions.
     import os #hide
     import sys #hide
     psep = os.path.sep #hide
-    basePath = os.getcwd() + psep + ".." + psep  + ".." + psep + 'SimPEGtemp'+ psep #hide
+    basePath = os.path.abspath(os.getcwd() + psep + ".." + psep  + ".." + psep + 'SimPEGtemp'+ psep) #hide
     input_file = basePath + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -419,7 +419,7 @@ true solution.
     import pylab as plt
     import numpy as np
     import shutil
-    
+
     psep = os.path.sep #hide
     basePath = os.getcwd() + psep + ".." + psep  + ".." + psep + 'SimPEGtemp'+ psep #hide
 
