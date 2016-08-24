@@ -124,7 +124,7 @@ then be loaded and easily accessed through the Driver class:
     cloudfiles = ['MagData.obs', 'Mesh.msh',
                   'Initm.sus', 'SimPEG_PF_Input.inp']
 
-    basePath = remoteDownload(url, cloudfiles) #hide
+    basePath = os.path.abspath(remoteDownload(url, cloudfiles)) #hide
     input_file = basePath + os.path.sep +  'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file)
 
