@@ -123,8 +123,8 @@ then be loaded and easily accessed through the Driver class:
     url = 'https://storage.googleapis.com/simpeg/tkc_synthetic/potential_fields/'
     cloudfiles = ['MagData.obs', 'Mesh.msh',
                   'Initm.sus', 'SimPEG_PF_Input.inp']
-    basePath = os.path.abspath(remoteDownload(url, cloudfiles)) #hide
-    print(basePath)
+    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)+['SimPEGtemp']) #hide
+    basePath = os.path.abspath(remoteDownload(url, cloudfiles, basePath=basePath+os.path.sep)) #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file)
 
@@ -168,7 +168,7 @@ with SimPEG's built-in functions.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    basePath = os.path.sep.join(os.curdir.split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp'
+    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -210,7 +210,7 @@ data above the synthetic kimberlite.
     import os #hide
     import sys #hide
     import numpy as np #hide
-    basePath = os.curdir + os.path.sep + 'SimPEGtemp' #hide
+    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)+['SimPEGtemp']) #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -245,7 +245,7 @@ data above the synthetic kimberlite.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    basePath = os.path.sep.join(os.curdir.split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp'
+    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
 
@@ -340,7 +340,7 @@ process is implemented with a directive added to the inversion workflow.
     import os #hide
     import sys #hide
     import numpy as np #hide
-    basePath = os.curdir + os.path.sep + 'SimPEGtemp' #hide
+    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)+['SimPEGtemp']) #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -409,13 +409,12 @@ true solution.
 .. plot::
 
     from SimPEG import Mesh
-    import os #hide
-    import sys #hide
+    import os
+    import sys
     import pylab as plt
     import numpy as np
-    import shutil
 
-    basePath = os.path.sep.join(os.curdir.split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp' #hide
+    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
 
     # Load the mesh, model and data
     mesh = Mesh.TensorMesh.readUBC(basePath + os.path.sep + "Mesh.msh")
@@ -536,10 +535,11 @@ true solution.
     cbarax.tick_params(labelsize=12)
     # cb.ax.xaxis.set_label_position('top')
     cb.set_label("Susceptibility (SI)",size=14)
-    plt.show()
 
-    # Clean up the working directory
-    shutil.rmtree(basePath)
+    import shutil
+    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
+    shutil.rmtree(basePath) #hide
+    plt.show()
 
 Summary
 ^^^^^^^
@@ -551,4 +551,4 @@ for the sparse regularization. The compact model on the other hand gives a
 much closer estimate of susceptibility values and shape of the magnetic
 anomaly. More details about the scaled IRLS method can be found in this thesis_.
 
-.. _thesis: "https://open.library.ubc.ca/cIRcle/collections/ubctheses/24/items/1.0166794"
+.. _thesis: https://open.library.ubc.ca/cIRcle/collections/ubctheses/24/items/1.0166794
