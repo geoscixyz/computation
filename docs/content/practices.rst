@@ -194,10 +194,11 @@ There are a few resources we use to promote these practices: the service
 a432c8817169b6d>`_ to check for consistency (... we have some work
 to do. Pull requests are welcome!)
 
-Sublime has PEP 8 linter packages that you can use. I use SublimeLinter-pep8.
+Sublime has PEP 8 linter packages that you can use. I use `SublimeLinter-pep8 <https://github.com/SublimeLinter/SublimeLinter-pep8>`_.
 You can install it by going to your package manager (`cmd + shift + p`),
-install package and search for SublimeLinter-pep8. This highlights and gives
-you tips on how to correct the code.
+install package and search for SublimeLinter-pep8. Installation instructions are available at https://github.com/SublimeLinter/SublimeLinter-pep8. 
+
+This highlights and gives you tips on how to correct the code.
 
 .. image:: ../images/pep8sublime.png
     :width: 95%
