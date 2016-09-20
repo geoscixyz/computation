@@ -123,9 +123,9 @@ then be loaded and easily accessed through the Driver class:
     url = 'https://storage.googleapis.com/simpeg/tkc_synthetic/potential_fields/'
     cloudfiles = ['MagData.obs', 'Mesh.msh',
                   'Initm.sus', 'SimPEG_PF_Input.inp']
-
     basePath = os.path.abspath(remoteDownload(url, cloudfiles)) #hide
-    input_file = basePath + os.path.sep +  'SimPEG_PF_Input.inp' #hide
+    print(basePath)
+    input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file)
 
     # Objects loaded from the input file are then accessible like this
@@ -168,8 +168,8 @@ with SimPEG's built-in functions.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    basePath = os.path.sep.join(os.getcwd().split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp'
-    input_file = basePath + os.path.sep +  'SimPEG_PF_Input.inp' #hide
+    basePath = os.path.sep.join(os.curdir.split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp'
+    input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
     initm = driver.m0 #hide
@@ -210,7 +210,7 @@ data above the synthetic kimberlite.
     import os #hide
     import sys #hide
     import numpy as np #hide
-    basePath = os.getcwd() + os.path.sep + 'SimPEGtemp' #hide
+    basePath = os.curdir + os.path.sep + 'SimPEGtemp' #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -245,7 +245,7 @@ data above the synthetic kimberlite.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    basePath = os.path.sep.join(os.getcwd().split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp'
+    basePath = os.path.sep.join(os.curdir.split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp'
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
 
@@ -340,7 +340,7 @@ process is implemented with a directive added to the inversion workflow.
     import os #hide
     import sys #hide
     import numpy as np #hide
-    basePath = os.getcwd() + os.path.sep + 'SimPEGtemp' #hide
+    basePath = os.curdir + os.path.sep + 'SimPEGtemp' #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -415,7 +415,7 @@ true solution.
     import numpy as np
     import shutil
 
-    basePath = os.path.sep.join(os.getcwd().split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp' #hide
+    basePath = os.path.sep.join(os.curdir.split(os.path.sep)[:-2]) + os.path.sep + 'SimPEGtemp' #hide
 
     # Load the mesh, model and data
     mesh = Mesh.TensorMesh.readUBC(basePath + os.path.sep + "Mesh.msh")
