@@ -16,5 +16,6 @@ Stories
     :maxdepth: 2
 
     TKC_DC_story
+    PF_MAG
 
 .. _SimPEG: http://simpeg.xyz
