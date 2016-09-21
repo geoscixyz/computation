@@ -33,7 +33,7 @@ def get(nbname, nbpath):
         print '   {0}'.format(nbpath)
         nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
                                   '--execute',
-                                  '--ExecutePreprocessor.timeout=120'],
+                                  '--ExecutePreprocessor.timeout=600'],
                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
         output, err = nbexe.communicate()
@@ -41,8 +41,9 @@ def get(nbname, nbpath):
         if check == 0:
             print '\n ..... {0} Passed ..... \n'.format(nbname)
             subprocess.call(['rm', '{0}.html'.format(
-                             os.path.sep.join(os.curdir.split(os.path.sep) +
-                             [nbpath.split(os.path.sep)[-1][:-6]]
+                             os.path.sep.join(
+                              os.path.abspath('.').split(os.path.sep) +
+                              [nbpath.split(os.path.sep)[-1][:-6]]
                              ))])
         else:
             print '\n <<<<< {0} FAILED >>>>> \n'.format(nbname)
