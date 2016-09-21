@@ -19,7 +19,7 @@ Potential Fields (Magnetics)
     :figwidth: 50%
 
 .. _poster: https://drive.google.com/open?id=0B-8Bv7qmQs23NHRTcXZ5WXVLdkE
-.. _here:  https://github.com/simpeg/tutorials/blob/PF_vDF/notebooks/Magnetics%20over%20TKC%20Final.ipynb
+.. _here:  https://github.com/simpeg/tutorials/blob/PF_vDF/notebooks/Magnetics_over_TKC_Final.ipynb
 
 Setup
 -----
@@ -123,7 +123,7 @@ then be loaded and easily accessed through the Driver class:
     url = 'https://storage.googleapis.com/simpeg/tkc_synthetic/potential_fields/'
     cloudfiles = ['MagData.obs', 'Mesh.msh',
                   'Initm.sus', 'SimPEG_PF_Input.inp']
-    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)+['SimPEGtemp']) #hide
+    basePath = os.path.sep.join(os.path.abspath(os.getenv('HOME')).split(os.path.sep)+['Downloads']+['SimPEGtemp']) #hide
     basePath = os.path.abspath(remoteDownload(url, cloudfiles, basePath=basePath+os.path.sep)) #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file)
@@ -168,7 +168,7 @@ with SimPEG's built-in functions.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
+    basePath = os.path.sep.join(os.path.abspath(os.getenv('HOME')).split(os.path.sep)+['Downloads']+['SimPEGtemp']) #hide    input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -210,7 +210,7 @@ data above the synthetic kimberlite.
     import os #hide
     import sys #hide
     import numpy as np #hide
-    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)+['SimPEGtemp']) #hide
+    basePath = os.path.sep.join(os.path.abspath(os.getenv('HOME')).split(os.path.sep)+['Downloads']+['SimPEGtemp']) #hide    input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -245,7 +245,7 @@ data above the synthetic kimberlite.
     import SimPEG.PF as PF #hide
     import os #hide
     import sys #hide
-    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
+    basePath = os.path.sep.join(os.path.abspath(os.getenv('HOME')).split(os.path.sep)+['Downloads']+['SimPEGtemp']) #hide    input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
 
@@ -340,7 +340,7 @@ process is implemented with a directive added to the inversion workflow.
     import os #hide
     import sys #hide
     import numpy as np #hide
-    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)+['SimPEGtemp']) #hide
+    basePath = os.path.sep.join(os.path.abspath(os.getenv('HOME')).split(os.path.sep)+['Downloads']+['SimPEGtemp']) #hide    input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     input_file = basePath + os.path.sep + 'SimPEG_PF_Input.inp' #hide
     driver = PF.MagneticsDriver.MagneticsDriver_Inv(input_file) #hide
     mesh = driver.mesh #hide
@@ -414,8 +414,7 @@ true solution.
     import pylab as plt
     import numpy as np
 
-    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
-
+    basePath = os.path.sep.join(os.path.abspath(os.getenv('HOME')).split(os.path.sep)+['Downloads']+['SimPEGtemp']) #hide
     # Load the mesh, model and data
     mesh = Mesh.TensorMesh.readUBC(basePath + os.path.sep + "Mesh.msh")
 
@@ -537,8 +536,8 @@ true solution.
     cb.set_label("Susceptibility (SI)",size=14)
 
     import shutil
-    basePath = os.path.sep.join(os.path.abspath('.').split(os.path.sep)[:-2]+['SimPEGtemp']) #hide
     shutil.rmtree(basePath) #hide
+
     plt.show()
 
 Summary
