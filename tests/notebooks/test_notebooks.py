@@ -41,7 +41,7 @@ def get(nbname, nbpath):
         if check == 0:
             print '\n ..... {0} Passed ..... \n'.format(nbname)
             subprocess.call(['rm', '{0}.html'.format(
-                             os.path.sep.join(os.getcwd().split(os.path.sep) +
+                             os.path.sep.join(os.curdir.split(os.path.sep) +
                              [nbpath.split(os.path.sep)[-1][:-6]]
                              ))])
         else:
