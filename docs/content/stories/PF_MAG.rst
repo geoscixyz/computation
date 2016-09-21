@@ -12,14 +12,17 @@ Potential Fields (Magnetics)
     implement a sparse regularization function and recover both a smooth and a
     compact susceptibility model, which can used to infer geological
     information at depth. The same example was presented as a poster_ at Scipy
-    2016. There is also a notebook available for download here_.
+    2016. There is also a notebook available for download
+
+..here_.
 
 .. figure:: images/Scipy_2016_PF_Thumbnail.png
     :align: center
     :figwidth: 50%
 
 .. _poster: https://drive.google.com/open?id=0B-8Bv7qmQs23NHRTcXZ5WXVLdkE
-.. _here:  https://github.com/simpeg/tutorials/blob/PF_vDF/notebooks/Magnetics%20over%20TKC%20Final.ipynb
+
+.._here:  https://github.com/simpeg/tutorials/blob/PF_vDF/notebooks/Magnetics%20over%20TKC%20Final.ipynb
 
 Setup
 -----
@@ -123,7 +126,7 @@ then be loaded and easily accessed through the Driver class:
     # Start by downloading files from the remote repository
     url = 'https://storage.googleapis.com/simpeg/tkc_synthetic/potential_fields/'
     cloudfiles = ['MagData.obs', 'Mesh.msh',
-                  'Initm.sus', 'SimPEG_PF_Input.inp'] 
+                  'Initm.sus', 'SimPEG_PF_Input.inp']
 
     basePath = io_utils.remoteDownload(url, cloudfiles) #hide
     input_file = basePath + 'SimPEG_PF_Input.inp' #hide
@@ -419,7 +422,7 @@ true solution.
     import pylab as plt
     import numpy as np
     import shutil
-    
+
     psep = os.path.sep #hide
     basePath = os.getcwd() + psep + ".." + psep  + ".." + psep + 'SimPEGtemp'+ psep #hide
 
