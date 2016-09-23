@@ -5,7 +5,11 @@ python:
 sudo: false
 
 env:
-  - TEST_DIR=tests/docs
+  - TEST_DIR=tests/docs;
+      GAE_PYTHONPATH=${HOME}/.cache/google_appengine;
+      PATH=$PATH:${HOME}/google-cloud-sdk/bin;
+      PYTHONPATH=${PYTHONPATH}:${GAE_PYTHONPATH};
+      CLOUDSDK_CORE_DISABLE_PROMPTS=1
   - TEST_DIR=tests/notebooks
 
 before_install:
