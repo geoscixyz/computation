@@ -85,7 +85,10 @@ language = None
 # directories to ignore when looking for source files.
 exclude_patterns = ['_build', '_static', 'content/stories/template*']
 
-linkcheck_ignore = ['http://mumps.enseeiht.fr/']
+linkcheck_ignore = [
+    'http://mumps.enseeiht.fr/',
+    'http://www.scipy.org/'
+                    ]
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
 #default_role = None
