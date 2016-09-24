@@ -38,7 +38,9 @@ script:
   - nosetests $TEST_DIR
 
 after_success:
-  - deploy.sh
+  - if [ ${TEST_DIR} = "tests/docs"];
+      build/simpeg/tutorials/deploy.sh;
+    fi
 
 notifications:
   email:
