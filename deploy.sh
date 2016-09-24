@@ -1,5 +1,10 @@
 #!/bin/bash
 
+cd ../../..
+if [ ! -d "$GAE_PYTHONPATH" ]; then wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip;
+    unzip -q google_appengine_1.9.38.zip; fi
+if [ ! -d "$GCSDK_PATH" ]; then curl https://sdk.cloud.google.com | bash; fi
+
 # if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
 if [ "$TRAVIS_BRANCH" = "gae-deploy" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
   export GAE_PROJECT=simpegtutorials
