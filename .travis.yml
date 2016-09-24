@@ -38,7 +38,7 @@ script:
   - nosetests $TEST_DIR
 
 after_success:
-  - ./deploy.sh
+  - deploy.sh
 
 notifications:
   email:
