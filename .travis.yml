@@ -38,7 +38,7 @@ script:
   - nosetests $TEST_DIR
 
 after_success:
-  - if [ "$TEST_DIR" = "tests/docs"]; then
+  - if [ "$TEST_DIR" = "tests/docs" ]; then
       build/simpeg/tutorials/deploy.sh;
     fi
 
