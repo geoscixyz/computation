@@ -19,10 +19,6 @@ env:
   - TEST_DIR=tests/notebooks
 
 before_install:
-  - cd ../../..
-  - if [ ! -d "$GAE_PYTHONPATH" ]; then wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip;
-    unzip -q google_appengine_1.9.38.zip; fi
-  - if [ ! -d "$GCSDK_PATH" ]; then curl https://sdk.cloud.google.com | bash; fi
   - cd build/simpeg/tutorials
 
 # command to install dependencies
