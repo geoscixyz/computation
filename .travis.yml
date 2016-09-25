@@ -18,8 +18,6 @@ env:
       CLOUDSDK_CORE_DISABLE_PROMPTS=1
   - TEST_DIR=tests/notebooks
 
-before_install:
-  - cd build/simpeg/tutorials
 
 # command to install dependencies
 install:
