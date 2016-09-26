@@ -32,7 +32,8 @@ script:
 
 after_success:
   - if [ "$TEST_DIR" = "tests/docs" ]; then
-      deploy.sh;
+      echo $PWD;
+      ./deploy.sh;
     fi
 
 notifications:
