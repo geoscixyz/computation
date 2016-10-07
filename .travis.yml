@@ -34,6 +34,7 @@ after_success:
   - if [ "$TEST_DIR" = "tests/docs" ]; then
       if [ "$TRAVIS_BRANCH" = "gae-deploy" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
         openssl aes-256-cbc -K $encrypted_c85711639858_key -iv $encrypted_c85711639858_iv -in docs/credentials.tar.gz.enc -out credentials.tar.gz -d
+        tar -xvzf credentials.tar.gz
         GAE_PYTHONPATH=${HOME}/.cache/google_appengine ;
         export PATH=$PATH:${HOME}/google-cloud-sdk/bin ;
         export PYTHONPATH=${PYTHONPATH}:${GAE_PYTHONPATH} ;
