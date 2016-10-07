@@ -89,6 +89,10 @@ language = None
 exclude_patterns = ['_build', '_static', 'content/stories/template*']
 
 linkcheck_ignore = ['http://mumps.enseeiht.fr/']
+
+linkcheck_retries = 3
+linkcheck_timeout = 500
+
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
 #default_role = None
