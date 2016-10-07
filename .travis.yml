@@ -3,22 +3,25 @@ python:
   - 2.7
 
 sudo: false
+cache:
+  timeout: 3600
+  pip: true
+  directory:
+  - ${HOME}/google_appengine
+  - ${HOME}/google-cloud-sdk
 
 env:
-  - TEST_DIR=tests/docs
+  - TEST_DIR=tests/docs;
+      GAE_PYTHONPATH=${HOME}/.cache/google_appengine;
+      PATH=$PATH:${HOME}/google-cloud-sdk/bin;
+      PYTHONPATH=${PYTHONPATH}:${GAE_PYTHONPATH};
+      CLOUDSDK_CORE_DISABLE_PROMPTS=1;
   - TEST_DIR=tests/notebooks
-
-before_install:
-  # - if [ ${TRAVIS_PYTHON_VERSION:0:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda-3.8.3-Linux-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-3.8.3-Linux-x86_64.sh -O miniconda.sh; fi
-  # - chmod +x miniconda.sh
-  # - ./miniconda.sh -b
-  # - export PATH=/home/travis/anaconda/bin:/home/travis/miniconda/bin:$PATH
-  # - conda update --yes conda
-  - pip install --upgrade pip;
-  - pip install -r requirements.txt
 
 # command to install dependencies
 install:
+  - pip install --upgrade pip;
+  - pip install -r requirements.txt
   - git clone https://github.com/simpeg/simpeg.git
   - cd simpeg; git checkout dev; git pull; python setup.py build_ext --inplace; cd ..
   - export PATH=$PWD/simpeg:$PATH
@@ -27,9 +30,23 @@ install:
 script:
   - nosetests $TEST_DIR
 
-# Flags used here, not in `make html`:
-#  -n   Run in nit-picky mode. Currently, this generates warnings for all missing references.
-#  -W   Turn warnings into errors. This means that the build stops at the first warning and sphinx-build exits with exit status 1.
+after_success:
+  - if [ "$TEST_DIR" = "tests/docs" ]; then
+      if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
+        openssl aes-256-cbc -K $encrypted_ee5a5d0f1956_key -iv $encrypted_ee5a5d0f1956_iv -in credentials.tar.gz.enc -out credentials.tar.gz -d ;        tar -xvzf credentials.tar.gz ;
+        python /docs/_ext/fetch_gae_sdk.py $(dirname "${GAE_PYTHONPATH}");
+        GAE_PYTHONPATH=${HOME}/.cache/google_appengine ;
+        export PATH=$PATH:${HOME}/google-cloud-sdk/bin ;
+        export PYTHONPATH=${PYTHONPATH}:${GAE_PYTHONPATH} ;
+        if [ ! -d ${HOME}/google-cloud-sdk ]; then
+           curl https://sdk.cloud.google.com | bash;
+        fi ;
+        gcloud auth activate-service-account --key-file credentials/client-secret.json ;
+        gcloud config set project simpegtutorials ;
+        gcloud -q components update gae-python ;
+        gcloud -q preview app deploy ./docs/app.yaml --version ${TRAVIS_COMMIT} --promote;
+      fi;
+    fi
 
 notifications:
   email:
