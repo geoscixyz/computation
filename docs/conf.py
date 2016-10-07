@@ -16,6 +16,8 @@ import sys
 import os
 import SimPEG
 
+sys.path.append('./_ext/')
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -37,6 +39,7 @@ extensions = [
     'sphinx.ext.ifconfig',
     'matplotlib.sphinxext.plot_directive',  # plots made with python
     'pyexec',
+    'edit_on_github'
     # 'sphinxcontrib.bibtex', # citations that can be made from a bibtex
 ]
 
@@ -113,6 +116,11 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+# -- Edit on Github Extension ---------------------------------------------
+
+edit_on_github_project = 'simpeg/tutorials'
+edit_on_github_branch = 'master'
+check_meta = False
 
 # -- Options for HTML output ----------------------------------------------
 
