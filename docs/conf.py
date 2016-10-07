@@ -16,7 +16,7 @@ import sys
 import os
 import SimPEG
 
-sys.path.append('./_ext/')
+sys.path.append(os.path.abspath('./_ext'))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
