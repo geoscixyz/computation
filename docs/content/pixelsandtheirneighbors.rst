@@ -12,11 +12,11 @@ Pixels and Their Neighbors
     doi: 10.1190/tle35080703.1
 
     .. image:: https://i.creativecommons.org/l/by-sa/4.0/88x31.png
-        :target: http://creativecommons.org/licenses/by-sa/4.0/
+        :target: https://creativecommons.org/licenses/by-sa/4.0/
         :align: center
 
     This work is licensed under a
-    `Creative Commons Attribution-ShareAlike 4.0 International License <http://creativecommons.org/licenses/by-sa/4.0/>`_.
+    `Creative Commons Attribution-ShareAlike 4.0 International License <https://creativecommons.org/licenses/by-sa/4.0/>`_.
 
     Associated notebooks are available on `github <https://github.com/seg/tutorials-2016/tree/master/1608_Finite_volume>`_ and can be run online with binders
 
