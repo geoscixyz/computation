@@ -340,7 +340,7 @@ Generated mapping should be passed to **Problem** class:
 .. code-block:: python
 
     # Generate problem with mapping
-    problem = DC.Problem3D_CC(mesh, mapping=mapping)
+    problem = DC.Problem3D_CC(mesh, sigmaMap=mapping)
 
 Data Misfit
 ***********
