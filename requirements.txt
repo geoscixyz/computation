@@ -8,4 +8,4 @@ sphinx_rtd_theme
 h5py
 git+git://github.com/simpeg/simpeg.git@dev
 git+git://github.com/3ptscience/sphinxcontrib-pyexec
-
+sphinx==1.4.8
