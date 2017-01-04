@@ -88,7 +88,12 @@ language = None
 # directories to ignore when looking for source files.
 exclude_patterns = ['_build', '_static', 'content/stories/template*']
 
-linkcheck_ignore = ['http://mumps.enseeiht.fr/']
+linkcheck_ignore = [
+    'http://mumps.enseeiht.fr/',
+    'http://library.seg.org/doi/abs/10.1190/tle35080703.1',
+    'https://creativecommons.org/licenses/by-sa/4.0/',
+    'https://github.com/seg/tutorials-2016/tree/master/1608_Finite_volume'
+]
 
 linkcheck_retries = 3
 linkcheck_timeout = 500
@@ -203,7 +208,7 @@ except Exception, e:
 #html_show_sphinx = True
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-#html_show_copyright = True
+html_show_copyright = False
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
