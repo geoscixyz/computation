@@ -20,7 +20,9 @@ env:
 
 # command to install dependencies
 install:
-  - pip install --upgrade pip;
+
+  install:
+  - conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib cython ipython nose sphinx ;
   - pip install -r requirements.txt
   - git clone https://github.com/simpeg/simpeg.git
   - cd simpeg; git checkout dev; git pull; python setup.py build_ext --inplace; cd ..
