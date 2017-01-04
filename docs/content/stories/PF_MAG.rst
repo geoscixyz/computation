@@ -225,7 +225,7 @@ data above the synthetic kimberlite.
 
     # Now that we have a model and a survey we can build the linear system ...
     # (use the argument forwardOnly=True to avoid storing the dense forward matrix)
-    prob = PF.Magnetics.MagneticIntegral(mesh, mapping=idenMap, actInd=actv, forwardOnly=True, rtype = 'tmi')
+    prob = PF.Magnetics.MagneticIntegral(mesh, chiMap=idenMap, actInd=actv, forwardOnly=True, rtype = 'tmi')
 
     # Pair the survey and problem (data and model space)
     survey.pair(prob)
@@ -349,7 +349,7 @@ process is implemented with a directive added to the inversion workflow.
     actvMap = Maps.InjectActiveCells(mesh, actv, -100) #hide
     idenMap = Maps.IdentityMap(nP=len(actv)) #hide
     initm = driver.m0 #hide
-    prob = PF.Magnetics.MagneticIntegral(mesh, mapping=idenMap, actInd=actv, rtype = 'tmi') #hide
+    prob = PF.Magnetics.MagneticIntegral(mesh, chiMap=idenMap, actInd=actv, rtype = 'tmi') #hide
     survey.pair(prob) #hides
 
     # It is potential fields, so we will need to push the inverison down

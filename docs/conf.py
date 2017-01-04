@@ -88,7 +88,12 @@ language = None
 # directories to ignore when looking for source files.
 exclude_patterns = ['_build', '_static', 'content/stories/template*']
 
-linkcheck_ignore = ['http://mumps.enseeiht.fr/']
+linkcheck_ignore = [
+    'http://mumps.enseeiht.fr/',
+    'http://library.seg.org/doi/abs/10.1190/tle35080703.1',
+    'https://creativecommons.org/licenses/by-sa/4.0/',
+    'https://github.com/seg/tutorials-2016/tree/master/1608_Finite_volume'
+]
 
 linkcheck_retries = 3
 linkcheck_timeout = 500
