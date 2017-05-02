@@ -96,7 +96,8 @@ condition imposed.
 
 .. plot::
 
-    from SimPEG import Mesh, np
+    import numpy as np
+    from SimPEG import Mesh
     # Core cell sizes in x, y, and z
     csx, csy, csz = 25., 25., 25.
     # Number of core cells in each directiPon s

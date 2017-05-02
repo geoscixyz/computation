@@ -1,7 +1,7 @@
-.. _story_MyStory:
+.. _story_CaseStudy:
 
-My Story
-========
+Case Study
+==========
 
 .. topic:: Purpose
 
