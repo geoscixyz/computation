@@ -96,7 +96,7 @@ exclude_patterns = [
 linkcheck_ignore = [
     'http://library.seg.org/doi/abs/10.1190/tle35080703.1',
     'https://creativecommons.org/licenses/by-sa/4.0/',
-    'https://github.com/seg/GeoSci computation-2016/tree/master/1608_Finite_volume'
+    'https://www.researchgate.net/profile/Douglas_Oldenburg/publication/238708196_5_Inversion_for_Applied_Geophysics_A_Tutorial/links/004635282572529927000000.pdf'
 ]
 
 linkcheck_retries = 3
