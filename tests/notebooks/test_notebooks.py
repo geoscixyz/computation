@@ -36,7 +36,7 @@ def get(nbname, nbpath):
             [
                 "jupyter", "nbconvert", "{0}".format(nbpath), "--execute",
                 "--ExecutePreprocessor.timeout=600",
-                "--kernel_name='python{}'".format(sys.version_info[0])
+                "--ExecutePreprocessor.kernel_name='python{}'".format(sys.version_info[0])
             ],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
