@@ -53,7 +53,7 @@ def get(nbname, nbpath):
         else:
             print("\n <<<<< {0} FAILED >>>>> \n".format(nbname))
             print("Captured Output: \n")
-            print("{}".format(err))
+            print(err)
 
         self.assertTrue(check == 0)
 
