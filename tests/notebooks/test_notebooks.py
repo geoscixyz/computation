@@ -12,6 +12,7 @@ NBDIR = os.path.sep.join(dirname.split(os.path.sep)[:-2]+['notebooks'])
 # TESTDIR = os.path.split(os.path.abspath(__file__))
 # NBDIR = os.path.sep.join(TESTDIR[:-1] + ['notebooks']) # where are the notebooks?
 
+
 def setUp():
     nbpaths = []  # list of notebooks, with file paths
     nbnames = []  # list of notebook names (for making the tests)
@@ -29,8 +30,8 @@ def get(nbname, nbpath):
 
     # use nbconvert to execute the notebook
     def test_func(self):
-        print '\n--------------- Testing {0} ---------------'.format(nbname)
-        print '   {0}'.format(nbpath)
+        print('\n--------------- Testing {0} ---------------'.format(nbname))
+        print('   {0}'.format(nbpath))
         nbexe = subprocess.Popen(['jupyter', 'nbconvert', '{0}'.format(nbpath),
                                   '--execute',
                                   '--ExecutePreprocessor.timeout=600'],
@@ -39,15 +40,15 @@ def get(nbname, nbpath):
         output, err = nbexe.communicate()
         check = nbexe.returncode
         if check == 0:
-            print '\n ..... {0} Passed ..... \n'.format(nbname)
+            print('\n ..... {0} Passed ..... \n'.format(nbname))
             subprocess.call(['rm', '{0}.html'.format(
                              os.path.sep.join(
                               os.path.abspath('.').split(os.path.sep) +
                               [nbpath.split(os.path.sep)[-1][:-6]]
                              ))])
         else:
-            print '\n <<<<< {0} FAILED >>>>> \n'.format(nbname)
-            print 'Captured Output: \n {0}'.format(err)
+            print('\n <<<<< {0} FAILED >>>>> \n'.format(nbname))
+            print('Captured Output: \n {0}'.format(err))
 
         self.assertTrue(check == 0)
 
