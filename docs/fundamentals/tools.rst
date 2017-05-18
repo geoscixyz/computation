@@ -38,7 +38,7 @@ a `Jupyter Notebook`_ from a terminal::
 
 and open :code:`tools.ipynb`. A few things to note
 
-.. image:: ../../../images/notebookpointers.png
+.. image:: ../../images/notebookpointers.png
     :align: center
     :width: 90%
 
@@ -196,8 +196,8 @@ practice to import is as shorthand :code:`np`.
 .. note::
     You can use tab completion to look at the attributes of an object
 
-    .. image:: ../../../images/tabcompletion.png
-        :scale: 30%
+    .. image:: ../../images/tabcompletion.png
+        :width: 30%
         :align: center
 
 How many dimensions?
@@ -221,7 +221,7 @@ gives you the number of elements)
 .. note::
     In the notebook, you can query documentation using a :code:`?`
 
-    .. image:: ../../../images/docsinnotebook.png
+    .. image:: ../../images/docsinnotebook.png
         :scale: 30%
         :align: center
 

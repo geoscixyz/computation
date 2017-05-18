@@ -41,7 +41,7 @@ extensions = [
     'edit_on_github',
     'IPython.sphinxext.ipython_console_highlighting',
     'nbsphinx',
-    # 'pyexec'
+    'pyexec'
     # 'sphinx_gallery.gen_gallery'
     # 'sphinxcontrib.bibtex', # citations that can be made from a bibtex
 ]
@@ -92,7 +92,7 @@ language = None
 exclude_patterns = [
     '_build',
     '_static',
-    '*.ipynb_checkpoints',
+    '*ipynb_checkpoints',
     'Untitled.ipynb'
 ]
 
