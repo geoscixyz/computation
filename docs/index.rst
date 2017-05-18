@@ -35,7 +35,7 @@ numerical tools. Everything is open. Everything is reproducible.
 .. toctree::
    :maxdepth: 1
 
-   content/fundamentals/index
-   content/tutorials/index
-   content/case-studies/index
+   fundamentals/index
+   tutorials/index
+   case-studies/index
 
