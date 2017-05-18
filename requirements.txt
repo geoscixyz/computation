@@ -12,4 +12,3 @@ git+git://github.com/3ptscience/sphinxcontrib-pyexec
 sphinx
 properties[full]
 nbsphinx
-pandoc

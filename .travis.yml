@@ -11,6 +11,10 @@ cache:
   - ${HOME}/google_appengine
   - ${HOME}/google-cloud-sdk
 
+addons:
+  apt_packages:
+    - pandoc
+
 env:
   global:
     - DEPLOY_DIR=tests/docs
