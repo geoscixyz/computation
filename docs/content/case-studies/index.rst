@@ -15,6 +15,11 @@ Case Studies
 
 .. _SimPEG: http://simpeg.xyz
 
+.. note::
+
+    The following are available as Jupyter notebooks that can be run through Azure Notebooks:
+    https://notebooks.azure.com/lheagy/libraries/geocompute.
+
 **Potential Fields**
 
 .. toctree::
