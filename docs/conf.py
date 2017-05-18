@@ -39,8 +39,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'matplotlib.sphinxext.plot_directive',  # plots made with python
     'edit_on_github',
-    'IPython.sphinxext.ipython_console_highlighting'
-    # 'nbsphinx',
+    'IPython.sphinxext.ipython_console_highlighting',
+    'nbsphinx',
     # 'pyexec'
     # 'sphinx_gallery.gen_gallery'
     # 'sphinxcontrib.bibtex', # citations that can be made from a bibtex
@@ -52,7 +52,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = ['.rst']
+source_suffix = ['.rst', '.ipynb']
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -92,7 +92,8 @@ language = None
 exclude_patterns = [
     '_build',
     '_static',
-    '**.ipynb_checkpoints',
+    '*.ipynb_checkpoints',
+    'Untitled.ipynb'
 ]
 
 linkcheck_ignore = [
