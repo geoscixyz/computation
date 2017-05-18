@@ -9,7 +9,7 @@ Case Studies
     implementation used to solve geophysical forward and inverse problems.
     These examples use the SimPEG_ framework.
 
-.. image:: ../../../images/SimPEGFramework.png
+.. image:: ../../images/SimPEGFramework.png
     :width: 80%
 
 
