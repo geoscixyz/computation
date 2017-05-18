@@ -289,7 +289,8 @@ Thinking in sparse
 
 .. code::
 
-    import scipy.sparse as sp
+    >>> import scipy.sparse as sp
+
 
 How do I solve you?
 *******************

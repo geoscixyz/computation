@@ -7,8 +7,9 @@ ipywidgets
 sphinx_rtd_theme
 h5py
 sympy
-git+git://github.com/simpeg/simpeg.git@dev
+SimPEG==0.6.0b1
 git+git://github.com/3ptscience/sphinxcontrib-pyexec
 sphinx
+properties[full]
 
 

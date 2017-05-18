@@ -38,8 +38,11 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'matplotlib.sphinxext.plot_directive',  # plots made with python
-    'pyexec',
-    'edit_on_github'
+    'edit_on_github',
+    'IPython.sphinxext.ipython_console_highlighting'
+    # 'nbsphinx',
+    # 'pyexec'
+    # 'sphinx_gallery.gen_gallery'
     # 'sphinxcontrib.bibtex', # citations that can be made from a bibtex
 ]
 
@@ -49,7 +52,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst']
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -59,7 +62,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'computation'
-copyright = u'2016, GeoSci Developers'
+copyright = u'2017, GeoSci Developers'
 author = u'GeoSci Developers'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -89,8 +92,7 @@ language = None
 exclude_patterns = [
     '_build',
     '_static',
-    'content/case-studies/template*',
-    'content/case-studies/PF_MAG*'
+    '**.ipynb_checkpoints',
 ]
 
 linkcheck_ignore = [
@@ -324,6 +326,14 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
                        # 'http://docs.simpeg.xyz/': None}
+
+# # sphinx gallery
+# sphinx_gallery_conf = {
+#     'backreferences_dir': False,
+#     'examples_dirs': ['../notebooks/case-studies'],
+#     'gallery_dirs': ['content/notebooks/case-studies'],
+# }
+
 
 # -- Usder Defined Functions -------------------------------------------
 
