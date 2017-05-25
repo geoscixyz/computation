@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# tutorials documentation build configuration file, created by
+# GeoSci computation documentation build configuration file, created by
 # sphinx-quickstart on Mon Apr  4 17:03:23 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -38,8 +38,11 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'matplotlib.sphinxext.plot_directive',  # plots made with python
-    'pyexec',
-    'edit_on_github'
+    'edit_on_github',
+    'IPython.sphinxext.ipython_console_highlighting',
+    'nbsphinx',
+    'pyexec'
+    # 'sphinx_gallery.gen_gallery'
     # 'sphinxcontrib.bibtex', # citations that can be made from a bibtex
 ]
 
@@ -49,7 +52,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.ipynb']
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -58,9 +61,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'tutorials'
-copyright = u'2016, SimPEG Developers'
-author = u'SimPEG Developers'
+project = u'computation'
+copyright = u'2017, GeoSci Developers'
+author = u'GeoSci Developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -86,13 +89,17 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', '_static', 'content/stories/template*']
+exclude_patterns = [
+    '_build',
+    '_static',
+    '*ipynb_checkpoints',
+    'Untitled.ipynb'
+]
 
 linkcheck_ignore = [
-    'http://mumps.enseeiht.fr/',
     'http://library.seg.org/doi/abs/10.1190/tle35080703.1',
     'https://creativecommons.org/licenses/by-sa/4.0/',
-    'https://github.com/seg/tutorials-2016/tree/master/1608_Finite_volume'
+    'https://www.researchgate.net/profile/Douglas_Oldenburg/publication/238708196_5_Inversion_for_Applied_Geophysics_A_Tutorial/links/004635282572529927000000.pdf'
 ]
 
 linkcheck_retries = 3
@@ -127,7 +134,7 @@ todo_include_todos = True
 
 # -- Edit on Github Extension ---------------------------------------------
 
-edit_on_github_project = 'simpeg/tutorials'
+edit_on_github_project = 'geoscixyz/computation'
 edit_on_github_branch = 'master'
 check_meta = False
 
@@ -233,7 +240,7 @@ html_show_copyright = False
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'tutorialsdoc'
+htmlhelp_basename = 'GeoSci computationdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -255,7 +262,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'tutorials.tex', u'tutorials Documentation',
+    (master_doc, 'GeoSci computation.tex', u'GeoSci computation Documentation',
      u'SimPEG Developers', 'manual'),
 ]
 
@@ -285,7 +292,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'tutorials', u'tutorials Documentation',
+    (master_doc, 'GeoSci computation', u'GeoSci computation Documentation',
      [author], 1)
 ]
 
@@ -299,8 +306,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'tutorials', u'tutorials Documentation',
-     author, 'tutorials', 'One line description of project.',
+    (master_doc, 'GeoSci computation', u'GeoSci computation Documentation',
+     author, 'GeoSci computation', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -320,6 +327,14 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
                        # 'http://docs.simpeg.xyz/': None}
+
+# # sphinx gallery
+# sphinx_gallery_conf = {
+#     'backreferences_dir': False,
+#     'examples_dirs': ['../notebooks/case-studies'],
+#     'gallery_dirs': ['content/notebooks/case-studies'],
+# }
+
 
 # -- Usder Defined Functions -------------------------------------------
 
