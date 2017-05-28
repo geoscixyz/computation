@@ -5,7 +5,7 @@ Resources
 
 - **Purpose:** A collection of resources we find useful.
 
-This is far from complete, so if you have additional resources, please `edit this page <https://github.com/geoscixyz/computation/blob/master/docs/content/fundamentals/resources.rst>`_
+This is far from complete, so if you have additional resources, please `edit this page <https://github.com/geoscixyz/computation/blob/master/docs/fundamentals/resources.rst>`_
 
 SimPEG
 ------
