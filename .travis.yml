@@ -49,6 +49,7 @@ install:
 
 # command to run tests
 script:
+  - python tests/execute_notebooks.py
   - nosetests $TEST_DIR
 
 after_success:

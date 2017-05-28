@@ -2,6 +2,7 @@ import unittest
 import sys
 import os
 import subprocess
+from ..execute_notebooks import clearNbOutput
 
 # Testing for the notebooks - use nbconvert to execute all cells of the
 # notebook
