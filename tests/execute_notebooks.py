@@ -21,7 +21,13 @@ def clearNbOutput():
                         print("Clearing output from {}".format(filename))
                         nb = nbformat.read(f, as_version=4)
                         ep = ClearOutputPreprocessor()
-                        ep.preprocess(nb, {})
+                        ep.preprocess(
+                            nb, {
+                                    "kernel_name": "python{}".format(
+                                        sys.version_info[0]
+                                    )
+                                }
+                        )
                         print("   ... done\n")
     return True
 
