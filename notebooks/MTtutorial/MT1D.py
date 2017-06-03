@@ -113,7 +113,7 @@ class MT1DSrc(Survey.BaseSrc):
 
 class ZxyRx(Survey.BaseRx):
 
-    def __init__(self, locs, component=None, frequency=None, rxType=None):
+    def __init__(self, locs, component=None, frequency=None):
         self.component = component
         self.frequency = frequency
         Survey.BaseRx.__init__(self, locs, rxType=None)
@@ -124,36 +124,69 @@ class ZxyRx(Survey.BaseRx):
             return Zxy.real
         elif self.component == "imag":
             return Zxy.imag
+        elif self.component == "both":
+            return np.r_[Zxy.real, Zxy.imag]
+        else:
+            raise NotImplementedError('must be real, imag or both')
+
+    def evalDeriv(self, f, freq, P0, df_dm_v=None, v=None, adjoint=False):
+        dZd_dm_v = P0 * (Utils.sdiag(1./(f**2)) * df_dm_v)
+        if self.component == "real":
+            return dZd_dm_v.real
+        elif self.component == "imag":
+            return dZd_dm_v.imag
+        elif self.component == "both":
+            return np.r_[dZd_dm_v.real, dZd_dm_v.imag]
+        else:
+            raise NotImplementedError('must be real, imag or both')
 
     @property
     def nD(self):
-        return len(self.frequency)
+        if self.component == "both":
+            return len(self.frequency) * 2
+        else:
+            return len(self.frequency)
 
 
-class AppResRx(ZxyRx):
+class AppResPhaRx(ZxyRx):
 
     def __init__(self, locs, component=None, frequency=None):
-        super(AppResRx, self).__init__(locs, component, frequency)
+        super(AppResPhaRx, self).__init__(locs, component, frequency)
 
     def eval(self, src, f, P0):
         Zxy = - 1./(P0*f)
         omega = 2*np.pi*self.frequency
-        return abs(Zxy)**2 / (mu_0*omega)
+        if self.component == "appres":
+            appres = abs(Zxy)**2 / (mu_0*omega)
+            return appres
+        elif self.component == "phase":
+            phase = np.rad2deg(np.arctan(Zxy.imag / Zxy.real))
+            return phase
+        elif self.component == "both":
+            appres = abs(Zxy)**2 / (mu_0*omega)
+            phase = np.rad2deg(np.arctan(Zxy.imag / Zxy.real))
+            return np.r_[appres, phase]
+        else:
+            raise NotImplementedError('must be appres, phase or both')
 
-    # def evalDeriv(self, mesh, f, v=None, adjoint=False):
-
-
-class PhaseRx(ZxyRx):
-
-    def __init__(self, locs, component=None, frequency=None):
-        super(PhaseRx, self).__init__(locs, component, frequency)
-
-    def eval(self, src, f, P0):
+    def evalDeriv(self, f, freq, P0, df_dm_v=None, v=None, adjoint=False):
         Zxy = - 1./(P0*f)
-        return np.rad2deg(np.arctan(Zxy.imag / Zxy.real))
+        dZ_dm_v = P0 * (Utils.sdiag(1./(f**2)) * df_dm_v)
+        omega = 2*np.pi*freq
 
-    # def evalDeriv(self, mesh, f, v=None, adjoint=False):
+        dZa_dZ = Zxy.conjugate() / abs(Zxy)
+        dappres_dZa = 2. * abs(Zxy) / (mu_0*omega)
+        dappres_dZ = dappres_dZa * dZa_dZ
+        dappres_dm_v = (dappres_dZ * dZ_dm_v).real
 
+        if self.component == "appres":
+            return dappres_dm_v
+        elif self.component == "phase":
+            return np.zeros_like(dappres_dm_v)
+        elif self.component == "both":
+            return np.r_[dappres_dm_v, np.zeros_like(dappres_dm_v)]
+        else:
+            raise NotImplementedError('must be appres, phase or both')
 
 class MT1DProblem(Problem.BaseProblem):
     """
@@ -185,8 +218,8 @@ class MT1DProblem(Problem.BaseProblem):
     solverOpts = {}  #: Solver options
 
     verbose = False
-    Ainv = None
-    ATinv = None
+    Ainv = []
+    ATinv = []
     f = None
 
     def __init__(self, mesh, **kwargs):
@@ -198,7 +231,7 @@ class MT1DProblem(Problem.BaseProblem):
     def deleteTheseOnModelUpdate(self):
         toDelete = []
         if self.sigmaMap is not None or self.rhoMap is not None:
-            toDelete += ['_MccSigma']
+            toDelete += ['_MccSigma', '_Ainv', '_ATinv']
         return toDelete
 
     @property
@@ -222,6 +255,17 @@ class MT1DProblem(Problem.BaseProblem):
         if getattr(self, '_MccSigma', None) is None:
             self._MccSigma = Utils.sdiag(self.sigma)
         return self._MccSigma
+
+    def MccSigmaDeriv(self, u):
+        """
+        Derivative of MccSigma with respect to the model
+        """
+        if self.sigmaMap is None:
+            return Utils.Zero()
+
+        return (
+            Utils.sdiag(u) * self.sigmaDeriv
+        )
 
     @property
     def MccEpsilon(self):
@@ -263,14 +307,37 @@ class MT1DProblem(Problem.BaseProblem):
         Grad = self.mesh.cellGrad
         omega = 2*np.pi*freq
         A = sp.vstack(
-            (sp.hstack(
+            (
+                sp.hstack(
                 (Grad, 1j*omega*self.MfMu)), sp.hstack((self.MccSigma, Div))
             )
         )
         return A
 
-    # def getADeriv_sigma(self, freq, u, v, adjoint=False):
-    #     return ADeriv_sigma
+    @property
+    def Ainv(self):
+        if getattr(self, '_Ainv', None) is None:
+            self._Ainv = []
+            for freq in self.survey.frequency:
+                self._Ainv.append(self.Solver(self.getA(freq)))
+        return self._Ainv
+
+    @property
+    def ATinv(self):
+        if getattr(self, '_ATinv', None) is None:
+            self._ATinv = []
+            for freq in self.survey.frequency:
+                self._ATinv.append((self.Solverself.getA(freq).T))
+        return self._ATinv
+
+    def getADeriv_sigma(self, freq, f, v, adjoint=False):
+        Ex = f[:self.mesh.nC]
+        dMcc_dsig = self.MccSigmaDeriv(Ex)
+
+        if adjoint:
+            pass
+        else:
+            return np.r_[np.zeros(self.mesh.nC+1), dMcc_dsig*v]
 
     def getRHS(self, freq):
         """
@@ -288,18 +355,39 @@ class MT1DProblem(Problem.BaseProblem):
         return RHS
 
     def fields(self, m=None):
-        self.Ainv = []
+        if self.verbose:
+            print (">> Compute fields")
+        if m is not None:
+            self.model = m
+
         f = np.zeros(
             (int(self.mesh.nC*2+1), self.survey.nFreq), dtype="complex"
             )
+
         for ifreq, freq in enumerate(self.survey.frequency):
-            A = self.getA(freq)
-            self.Ainv.append(self.Solver(A))
             f[:, ifreq] = self.Ainv[ifreq] * self.getRHS(freq)
         return f
 
-    # def Jvec(self, m, v, f=None):
-    #     return Jvec
+    def Jvec(self, m, v, f=None):
+
+        if f is None:
+            f = self.fields(m)
+
+        self.model = m
+
+        Jv = []
+
+        for src in self.survey.srcList:
+            for rx in src.rxList:
+                for ifreq, freq in enumerate(self.survey.frequency):
+                    dA_dm_f_v = self.getADeriv_sigma(freq, f[:, ifreq], v)
+                    df_dm_v = - (self.Ainv[ifreq] * dA_dm_f_v)
+                    Jv.append(
+                        rx.evalDeriv(
+                            f[:, ifreq], freq, self.survey.P0, df_dm_v=df_dm_v
+                            )
+                        )
+        return np.hstack(Jv)
 
     # def Jtvec(self, m, v, f=None):
     #     return Jtvec
