@@ -130,15 +130,38 @@ class ZxyRx(Survey.BaseRx):
             raise NotImplementedError('must be real, imag or both')
 
     def evalDeriv(self, f, freq, P0, df_dm_v=None, v=None, adjoint=False):
-        dZd_dm_v = P0 * (Utils.sdiag(1./(f**2)) * df_dm_v)
-        if self.component == "real":
-            return dZd_dm_v.real
-        elif self.component == "imag":
-            return dZd_dm_v.imag
-        elif self.component == "both":
-            return np.r_[dZd_dm_v.real, dZd_dm_v.imag]
+
+        if adjoint:
+
+            if self.component == "real":
+                PTvr = (P0.T*v).astype(complex)
+                dZr_dfT_v = Utils.sdiag((1./(f**2)))*PTvr
+                return dZr_dfT_v
+            elif self.component == "imag":
+                PTvi = P0.T*v*-1j
+                dZi_dfT_v = Utils.sdiag((1./(f**2)))*PTvi
+                return dZi_dfT_v
+            elif self.component == "both":
+                PTvr = (P0.T*np.r_[v[0]]).astype(complex)
+                PTvi = P0.T*np.r_[v[1]]*-1j
+                dZr_dfT_v = Utils.sdiag((1./(f**2)))*PTvr
+                dZi_dfT_v = Utils.sdiag((1./(f**2)))*PTvi
+                return dZr_dfT_v + dZi_dfT_v
+            else:
+                raise NotImplementedError('must be real, imag or both')
+
         else:
-            raise NotImplementedError('must be real, imag or both')
+
+            dZd_dm_v = P0 * (Utils.sdiag(1./(f**2)) * df_dm_v)
+
+            if self.component == "real":
+                return dZd_dm_v.real
+            elif self.component == "imag":
+                return dZd_dm_v.imag
+            elif self.component == "both":
+                return np.r_[dZd_dm_v.real, dZd_dm_v.imag]
+            else:
+                raise NotImplementedError('must be real, imag or both')
 
     @property
     def nD(self):
@@ -170,23 +193,46 @@ class AppResPhaRx(ZxyRx):
             raise NotImplementedError('must be appres, phase or both')
 
     def evalDeriv(self, f, freq, P0, df_dm_v=None, v=None, adjoint=False):
+
         Zxy = - 1./(P0*f)
-        dZ_dm_v = P0 * (Utils.sdiag(1./(f**2)) * df_dm_v)
         omega = 2*np.pi*freq
 
-        dZa_dZ = Zxy.conjugate() / abs(Zxy)
-        dappres_dZa = 2. * abs(Zxy) / (mu_0*omega)
-        dappres_dZ = dappres_dZa * dZa_dZ
-        dappres_dm_v = (dappres_dZ * dZ_dm_v).real
+        if adjoint:
 
-        if self.component == "appres":
-            return dappres_dm_v
-        elif self.component == "phase":
-            return np.zeros_like(dappres_dm_v)
-        elif self.component == "both":
-            return np.r_[dappres_dm_v, np.zeros_like(dappres_dm_v)]
+            dZa_dZ = Zxy / abs(Zxy)
+            dappres_dZa = 2. * abs(Zxy) / (mu_0*omega)
+            dappres_dZ = (dappres_dZa * dZa_dZ)
+
+            dappres_dZT_v = dappres_dZ.conj() * np.r_[v[0]]
+            dappres_dfT_v = Utils.sdiag((1./(f**2)))*(P0.T*dappres_dZT_v)
+
+            if self.component == "appres":
+                return dappres_dfT_v
+            elif self.component == "phase":
+                return np.zeros_like(dappres_dfT_v)
+            elif self.component == "both":
+                return dappres_dfT_v
+            else:
+                raise NotImplementedError('must be real, imag or both')
+
         else:
-            raise NotImplementedError('must be appres, phase or both')
+
+            dZ_dm_v = P0 * (Utils.sdiag(1./(f**2)) * df_dm_v)
+
+            dZa_dZ = Zxy.conjugate() / abs(Zxy)
+            dappres_dZa = 2. * abs(Zxy) / (mu_0*omega)
+            dappres_dZ = dappres_dZa * dZa_dZ
+            dappres_dm_v = (dappres_dZ * dZ_dm_v).real
+
+            if self.component == "appres":
+                return dappres_dm_v
+            elif self.component == "phase":
+                return np.zeros_like(dappres_dm_v)
+            elif self.component == "both":
+                return np.r_[dappres_dm_v, np.zeros_like(dappres_dm_v)]
+            else:
+                raise NotImplementedError('must be appres, phase or both')
+
 
 class MT1DProblem(Problem.BaseProblem):
     """
@@ -218,8 +264,6 @@ class MT1DProblem(Problem.BaseProblem):
     solverOpts = {}  #: Solver options
 
     verbose = False
-    Ainv = []
-    ATinv = []
     f = None
 
     def __init__(self, mesh, **kwargs):
@@ -229,6 +273,8 @@ class MT1DProblem(Problem.BaseProblem):
 
     @property
     def deleteTheseOnModelUpdate(self):
+        if self.verbose:
+            print ("Delete Matrices")
         toDelete = []
         if self.sigmaMap is not None or self.rhoMap is not None:
             toDelete += ['_MccSigma', '_Ainv', '_ATinv']
@@ -317,6 +363,8 @@ class MT1DProblem(Problem.BaseProblem):
     @property
     def Ainv(self):
         if getattr(self, '_Ainv', None) is None:
+            if self.verbose:
+                print ("Factorize A matrix")
             self._Ainv = []
             for freq in self.survey.frequency:
                 self._Ainv.append(self.Solver(self.getA(freq)))
@@ -325,17 +373,20 @@ class MT1DProblem(Problem.BaseProblem):
     @property
     def ATinv(self):
         if getattr(self, '_ATinv', None) is None:
+            if self.verbose:
+                print ("Factorize AT matrix")
             self._ATinv = []
             for freq in self.survey.frequency:
-                self._ATinv.append((self.Solverself.getA(freq).T))
+                self._ATinv.append(self.Solver(self.getA(freq).T))
         return self._ATinv
 
     def getADeriv_sigma(self, freq, f, v, adjoint=False):
         Ex = f[:self.mesh.nC]
         dMcc_dsig = self.MccSigmaDeriv(Ex)
-
         if adjoint:
-            pass
+            return sp.hstack(
+                (Utils.spzeros(self.mesh.nC, self.mesh.nN), dMcc_dsig.T)
+                ) * v
         else:
             return np.r_[np.zeros(self.mesh.nC+1), dMcc_dsig*v]
 
@@ -357,6 +408,7 @@ class MT1DProblem(Problem.BaseProblem):
     def fields(self, m=None):
         if self.verbose:
             print (">> Compute fields")
+
         if m is not None:
             self.model = m
 
@@ -373,8 +425,6 @@ class MT1DProblem(Problem.BaseProblem):
         if f is None:
             f = self.fields(m)
 
-        self.model = m
-
         Jv = []
 
         for src in self.survey.srcList:
@@ -389,5 +439,33 @@ class MT1DProblem(Problem.BaseProblem):
                         )
         return np.hstack(Jv)
 
-    # def Jtvec(self, m, v, f=None):
-    #     return Jtvec
+    def Jtvec(self, m, v, f=None):
+
+        if f is None:
+            f = self.fields(m)
+        # Ensure v is a data object.
+
+        if not isinstance(v, self.dataPair):
+            v = self.dataPair(self.survey, v)
+
+        Jtv = np.zeros(m.size)
+
+        for src in self.survey.srcList:
+            for rx in src.rxList:
+                for ifreq, freq in enumerate(self.survey.frequency):
+                    if rx.component == "both":
+                        v_temp = v[src, rx].reshape((self.survey.nFreq, 2))[ifreq, :]
+                    else:
+                        v_temp = v[src, rx][ifreq]
+
+                    dZ_dfT_v = rx.evalDeriv(
+                        f[:, ifreq], freq, self.survey.P0,
+                        v=v_temp, adjoint=True
+                        )
+
+                    ATinvdZ_dfT = self.ATinv[ifreq]*dZ_dfT_v
+                    Jtv += - self.getADeriv_sigma(
+                        freq, f[:,ifreq], ATinvdZ_dfT, adjoint=True
+                        ).real
+
+        return Jtv
