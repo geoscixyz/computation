@@ -354,8 +354,8 @@ class MT1DProblem(Problem.BaseProblem):
         omega = 2*np.pi*freq
         A = sp.vstack(
             (
-                sp.hstack(
-                (Grad, 1j*omega*self.MfMu)), sp.hstack((self.MccSigma, Div))
+                sp.hstack((Grad, 1j*omega*self.MfMu)),
+                sp.hstack((self.MccSigma, Div))
             )
         )
         return A
@@ -454,7 +454,9 @@ class MT1DProblem(Problem.BaseProblem):
             for rx in src.rxList:
                 for ifreq, freq in enumerate(self.survey.frequency):
                     if rx.component == "both":
-                        v_temp = v[src, rx].reshape((self.survey.nFreq, 2))[ifreq, :]
+                        v_temp = v[src, rx].reshape(
+                            (self.survey.nFreq, 2)
+                            )[ifreq, :]
                     else:
                         v_temp = v[src, rx][ifreq]
 
@@ -465,7 +467,7 @@ class MT1DProblem(Problem.BaseProblem):
 
                     ATinvdZ_dfT = self.ATinv[ifreq]*dZ_dfT_v
                     Jtv += - self.getADeriv_sigma(
-                        freq, f[:,ifreq], ATinvdZ_dfT, adjoint=True
+                        freq, f[:, ifreq], ATinvdZ_dfT, adjoint=True
                         ).real
 
         return Jtv
