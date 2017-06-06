@@ -1,16 +1,7 @@
 import numpy as np
 import scipy.sparse as sp
 
-def app_res_phase(Zxy):
-    """
-    compute apparent resistivity and phase given an impedance
-    """
-    app_res = abs(Zxy)**2 / (mu_0*omega)
-    app_phase = np.rad2deg(np.arctan(Zxy.imag / Zxy.real))
-
-    return app_res, app_phase
-
-def MTsimulation(mesh, sigma, frequency, rtype="app_res"):
+def simulateMT(mesh, sigma, frequency, rtype="app_res"):
     """
        Compute apparent resistivity and phase at each frequency. 
        Return apparent resistivity and phase for rtype="app_res",
@@ -24,9 +15,11 @@ def MTsimulation(mesh, sigma, frequency, rtype="app_res"):
     Grad = mesh.cellGrad # Gradient matrix
 
     # MfMu
+    mu = np.ones(mesh.nC)*mu_0 # magnetic permeability values for all cells
     Mmu = Utils.sdiag(mesh.aveCC2F * mu) 
 
     # Mccsigma
+    sigmahat = sigma  # quasi-static assumption
     Msighat = Utils.sdiag(sigmahat) 
 
     # Div
@@ -59,7 +52,9 @@ def MTsimulation(mesh, sigma, frequency, rtype="app_res"):
         return Zxy
 
     elif rtype.lower() == "app_res":
-        return app_res_phase(Zxy)
+        app_res = abs(Zxy)**2 / (mu_0*omega)
+        app_phase = np.rad2deg(np.arctan(Zxy.imag / Zxy.real))
+        return app_res, app_phase
     
     else:
         raise Exception, "rtype must be 'impedance' or 'app_res', not {}".format(rtype.lower())
