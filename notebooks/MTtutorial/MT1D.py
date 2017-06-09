@@ -69,7 +69,7 @@ class MT1DSurvey(Survey.BaseSurvey):
     def evalDeriv(self):
         raise Exception('Use Receivers to project fields deriv.')
 
-    def setMesh(self, sigma=0.1, max_depth_core=3000., ncell_per_skind=10, n_skind=2):
+    def setMesh(self, sigma=0.1, max_depth_core=3000., ncell_per_skind=10, n_skind=2, core_meshType="linear", max_hz_core=None):
 
         """
         Set 1D Mesh based using skin depths
@@ -77,7 +77,6 @@ class MT1DSurvey(Survey.BaseSurvey):
         """
         rho = 1./sigma
         fmin, fmax = self.frequency.min(), self.frequency.max()
-
         print (
             (">> Smallest cell size = %d m") % (500*np.sqrt(rho/fmax) / ncell_per_skind)
             )
@@ -87,17 +86,42 @@ class MT1DSurvey(Survey.BaseSurvey):
         cs = 500*np.sqrt(rho/fmax) / ncell_per_skind
         length_bc = 500*np.sqrt(100/fmin) * n_skind
 
+        if core_meshType == "linear":
+
+            max_hz_core = cs
+
+        elif core_meshType == "log":
+
+            if max_hz_core is None:
+                max_hz_core  = cs * 10
+
+            ncz = 2
+            hz_core = np.logspace(np.log10(cs), np.log10(max_hz_core), ncz)
+
+            while hz_core.sum() < max_depth_core:
+                ncz += 1
+                hz_core = np.logspace(np.log10(cs), np.log10(max_hz_core), ncz)
+
         npad = 1
-        blength = cs*1.3**(np.arange(npad)+1)
+        blength = max_hz_core*1.3**(np.arange(npad)+1)
+
         while blength < length_bc:
             npad += 1
-            blength = (cs*1.3**(np.arange(npad)+1)).sum()
+            blength = (max_hz_core*1.3**(np.arange(npad)+1)).sum()
         print (
             (">> # of padding cells %d") % (npad)
             )
 
-        ncz = int(max_depth_core / cs)
-        hz = [(cs, npad, -1.3), (cs, ncz)]
+        if core_meshType == "linear":
+            ncz = int(max_depth_core / cs)
+            hz = [(cs, npad, -1.3), (cs, ncz)]
+        elif core_meshType == "log":
+            hz_pad = max_hz_core * 1.3**(np.arange(npad)+1)
+            hz = np.r_[hz_pad[::-1], hz_core[::-1]]
+
+        print (
+            (">> # of core cells cells %d") % (ncz)
+            )
         mesh = Mesh.TensorMesh([hz], x0='N')
 
         return mesh
