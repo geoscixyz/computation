@@ -353,7 +353,7 @@ class MT1DProblem(Problem.BaseProblem):
         """
         if getattr(self, '_MMfMu', None) is None:
             self._MMfMu = Utils.sdiag(
-                self.mesh.aveF2CC.T * self.mu * np.ones(self.mesh.nC)
+                self.mesh.aveCC2F * self.mu * np.ones(self.mesh.nC)
                 )
         return self._MMfMu
 
