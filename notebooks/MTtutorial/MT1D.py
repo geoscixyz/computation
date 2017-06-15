@@ -227,14 +227,15 @@ class AppResPhaRx(ZxyRx):
             dappres_dZa = 2. * abs(Zxy) / (mu_0*omega)
             dappres_dZ = (dappres_dZa * dZa_dZ)
 
-            dappres_dZT_v = dappres_dZ.conj() * np.r_[v[0]]
-            dappres_dfT_v = Utils.sdiag((1./(f**2)))*(P0.T*dappres_dZT_v)
-
             if self.component == "appres":
+                dappres_dZT_v = dappres_dZ.conj() * np.r_[v]
+                dappres_dfT_v = Utils.sdiag((1./(f**2)))*(P0.T*dappres_dZT_v)
                 return dappres_dfT_v
             elif self.component == "phase":
                 return np.zeros_like(dappres_dfT_v)
             elif self.component == "both":
+                dappres_dZT_v = dappres_dZ.conj() * np.r_[v[0]]
+                dappres_dfT_v = Utils.sdiag((1./(f**2)))*(P0.T*dappres_dZT_v)
                 return dappres_dfT_v
             else:
                 raise NotImplementedError('must be real, imag or both')
