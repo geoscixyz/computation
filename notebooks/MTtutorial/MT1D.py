@@ -110,7 +110,7 @@ class MT1DSurvey(Survey.BaseSurvey):
             blength = (max_hz_core*1.3**(np.arange(npad)+1)).sum()
         print (
             (">> # of padding cells %d") % (npad)
-            )
+        )
 
         if core_meshType == "linear":
             ncz = int(max_depth_core / cs)
