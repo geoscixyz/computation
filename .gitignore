@@ -71,3 +71,5 @@ Untitled.ipynb
 *.obs
 *.sus
 
+*.sublime-project
+*.sublime-workspace
